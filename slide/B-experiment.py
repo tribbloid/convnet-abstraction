@@ -132,7 +132,9 @@ def newModel() -> glu.nn.HybridSequential:
         glu.nn.Dense(10)
     )
 
-    model.initialize(ctx=CTX)
+    init = initializer.Uniform()
+    # init = initializer.One()
+    model.initialize(ctx=CTX, init=init)
     return model
 
 
@@ -152,7 +154,7 @@ def train(
         name: str,
         loader: DataLoader = data,
         lossTarget=0.15,
-        maxEpochs=50,
+        maxEpochs=100,
         aug=lambda v: v
 ) -> Sequential:
     model = newModel()
@@ -165,7 +167,7 @@ def train(
     except Exception as ee:
         print(f">> model being learned from scratch: {filePath}")
 
-        optimizer = glu.Trainer(model.collect_params(), 'sgd', {'learning_rate': 0.01})
+        optimizer = glu.Trainer(model.collect_params(), 'adam', {'learning_rate': 0.01})
 
         # cc = 0
         for epoch in range(maxEpochs):
@@ -217,12 +219,7 @@ utils.helper.viewFCWeights(fc1)
 
 # %%
 
-fc2 = model[1].getLayers()[0]
-utils.helper.viewFCWeights(fc2)
-
-# %%
-
-fc3 = model[2]
+fc3 = model[1]
 utils.helper.viewFCWeights(fc3)
 
 # %%
@@ -238,10 +235,5 @@ utils.helper.viewFCWeights(fc1)
 
 # %%
 
-fc2 = augModel[1].getLayers()[0]
-utils.helper.viewFCWeights(fc2)
-
-# %%
-
-fc3 = augModel[2]
+fc3 = augModel[1]
 utils.helper.viewFCWeights(fc3)

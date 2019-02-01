@@ -109,4 +109,5 @@ venv.bak/
 .idea/
 .idea_modules/
 
-**/checkpoints
+# ML models
+**/.model_checkpoints

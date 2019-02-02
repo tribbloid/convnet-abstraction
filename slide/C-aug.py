@@ -21,25 +21,31 @@
 # %%
 # %load_ext autoreload
 # %autoreload 2
+# %matplotlib inline
 
 # %%
 import os
 import sys
-import networkx as nx
+from typing import Tuple
 
-from graphPlot import drawGraph
-from const import *
+from dataclasses import dataclass
 
 if '' in sys.path:
     sys.path.remove('')
 
-module_path = os.path.abspath(os.path.join('..'))
+module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
 print(sys.path)
 
+import networkx as nx
+
+from graphPlot import drawGraph
+from const import *
+
 plt.rcParams['figure.figsize'] = [10, 10]
+print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
 # ## Data Augmentation
@@ -129,8 +135,8 @@ afs = [
 ]
 
 for i in range(0, 4):
-    g.add_edge(fs[i], fs[i + 1], text='||')
-    g.add_edge(afs[i], afs[i + 1], text='||')
+    g.add_edge(fs[i], fs[i + 1], text=' Layer >')
+    g.add_edge(afs[i], afs[i + 1], text=' Layer >')
 #     g.add_edge(fs[i], afs[i])
 
 g2 = g.copy()
@@ -138,7 +144,7 @@ g2 = g.copy()
 for i in range(0, 4):
     g2.add_edge(fs[i], afs[i], text='Augment')
 
-g2.add_edge(afs[0], fs[1], text='Invariant || (DON\'T DO THIS)')
+g2.add_edge(afs[0], fs[1], text='Invariant Layer (DON\'T DO THIS)')
 
 drawGraph(g2, font='humor sans', layoutG=g)
 
@@ -150,13 +156,13 @@ plt.show()
 # Hypothesis 1 (equivariance): Should be applicable to any layer
 #
 # $$
-# U_{ga} \circ f_+(y) = U_{ga}|_y \circ <f(x), w(x, y)> dx = <A_{ug} \circ f(x), w(x, y)> dx
+# U_{ga} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
 # $$
 #
 # Hypothesis 2 (**transitivity**): in any signal we can find a reference point $x_0$, such that values of **any other points** can be found on $x_0$ of an augmented signal:
 #
 # $$
-# \forall x : f(x) = \Big( \bar{A}_{ug} \circ f(x) \Big) (x_0)
+# \forall x : f(x) = \Big( \bar{A}_{ug} \circ f \Big) (x_0)
 # $$
 #
 # What does that even mean?
@@ -170,25 +176,25 @@ plt.show()
 # Hypothesis 1 (equivariance): Should be applicable to any layer
 #
 # $$
-# U_{ga} \circ f_+(y) = U_{ga}|_y \circ <f(x), w(x, y)> dx = <A_{ug} \circ f(x), w(x, y)> dx
+# U_{ga} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
 # $$
 #
 # Hypothesis 2 (transitivity): in any signal we can find a reference point $x_0$, such that values of **any other points** can be found on $x_0$ of an augmented signal:
 #
 # $$
-# \forall x : f(x) = \Big( \bar{A}_{ug} \circ f(x) \Big) (x_0)
+# \forall x : f(x) = \Big( \bar{A}_{ug} \circ f \Big) (x_0)
 # $$
 #
 # **Combining all together**:
 #
 # $$
-# f_+(y) = \Big( \bar{U}_{ga} \circ f_+(y) \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> dx = <\bar{A}_{ug} \circ f(x), w_0(x)> dx
+# f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bar{A}_{ug} \circ f(x), w_0(x)> _x
 # $$
 #
 # Looks familiar yet?
 #
 # $$
-# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \int\limits_{x \in \text{Manifold}} f(\Delta + x) w_0(x) d x = <f(\Delta + x), w_0(x)> d x
+# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \int\limits_{x \in \text{Manifold}} f(\Delta + x) w_0(x) _x = <f(\Delta + x), w_0(x)> _x
 # $$
 #
 #
@@ -197,13 +203,14 @@ plt.show()
 # %% [markdown]
 # ## Data Augmentation
 #
-# - Looks like ConvNet is a FC Net with translation as family of augmentations!
+# **Combining all together**:
 #
-# - Still feel strange? Let's do a thought experiment:
+# $$
+# f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bar{A}_{ug} \circ f(x), w_0(x)> _x
+# $$
 #
-#     - Assuming you start with a deep FC-ResNet, with all weights initialized to 0
-#     - Then you run back-propagation once, but this time instead of using 1 picture at time, you use a minibatch consisting of **all augmented pictures** (including the original one)
-#     - What will be the weight?
+# - Looks like ConvNet layer is nothing more than a FC layer with translation as family of augmentations!
+#
 #
 
 # %% [markdown]

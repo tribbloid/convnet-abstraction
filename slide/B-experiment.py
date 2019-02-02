@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ---
 # jupyter:
 #   jupytext:
@@ -97,10 +98,10 @@ lossFn = glu.loss.SoftmaxCrossEntropyLoss()
 # %%
 
 @dataclass
-class HWY(glu.HybridBlock):
+class Skip(glu.HybridBlock):
 
     def __init__(self, layers: Tuple):
-        super(HWY, self).__init__()
+        super(Skip, self).__init__()
         self.delegate = glu.nn.HybridSequential()
         self.delegate.add(*layers)
 
@@ -117,23 +118,27 @@ class HWY(glu.HybridBlock):
 
 # %%
 # Build a feed-forward network
+# this goofy-looking skip architecture is from:
+# [1] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation,” no. Nips, pp. 1–11, 2017.
+# designed to break symmetry
+
 def newModel() -> glu.nn.HybridSequential:
     model = glu.nn.HybridSequential()
     # with model.name_scope():
     model.add(
-        HWY((
+        Skip((
             glu.nn.Dense(100),
-            glu.nn.Activation('relu')
         )),
-        HWY((
-            glu.nn.Dense(100),
-            glu.nn.Activation('relu')
-        )),
+        glu.nn.Activation('relu'),
+        # Skip((
+        #     glu.nn.Dense(100),
+        # )),
+        # glu.nn.Activation('relu'),
         glu.nn.Dense(10)
     )
 
-    init = initializer.Uniform()
-    # init = initializer.One()
+    # init = initializer.Uniform()
+    init = initializer.Zero()
     model.initialize(ctx=CTX, init=init)
     return model
 
@@ -167,7 +172,7 @@ def train(
     except Exception as ee:
         print(f">> model being learned from scratch: {filePath}")
 
-        optimizer = glu.Trainer(model.collect_params(), 'adam', {'learning_rate': 0.01})
+        optimizer = glu.Trainer(model.collect_params(), 'sgd', {'learning_rate': 0.01})
 
         # cc = 0
         for epoch in range(maxEpochs):
@@ -219,7 +224,7 @@ utils.helper.viewFCWeights(fc1)
 
 # %%
 
-fc3 = model[1]
+fc3 = model[len(model) - 1]
 utils.helper.viewFCWeights(fc3)
 
 # %%
@@ -235,5 +240,5 @@ utils.helper.viewFCWeights(fc1)
 
 # %%
 
-fc3 = augModel[1]
+fc3 = augModel[len(augModel) - 1]
 utils.helper.viewFCWeights(fc3)

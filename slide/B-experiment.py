@@ -16,9 +16,6 @@
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # # ConvNet Abstraction
 
-# %% [markdown]
-# ## Overview
-
 # %%
 # %load_ext autoreload
 # %autoreload 2
@@ -38,7 +35,7 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-print(sys.path)
+# print(sys.path)
 
 import networkx as nx
 
@@ -46,12 +43,12 @@ from graphPlot import drawGraph
 from const import *
 
 plt.rcParams['figure.figsize'] = [10, 10]
-print(plt.rcParams['figure.figsize'])
+# print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
-# ## DataAugmentation
+# ## Data Augmentation
 #
-# Let's do a small experiment, here is an augmentation in python
+# Let's do a hello-world experiment on MNIST dataset, here is a simple augmentation:
 
 # %%
 
@@ -70,21 +67,54 @@ img1 = imgs[0].squeeze(axis=(0,))
 print(img1.shape)
 plt.imshow(img1.asnumpy())
 
+# %% [markdown]
+# ## Data Augmentation
+#
+# Now I can shift vertically
+
 # %%
-
 auged = img1.copy()
-
 auged = aug2conv.shiftY(auged, 6)
 plt.imshow(auged.asnumpy())
 
+# %% [markdown]
+# ## Data Augmentation
+#
+# ... and horizontally
+
 # %%
+auged = img1.copy()
 auged = aug2conv.shiftX(auged, 7)
 plt.imshow(auged.asnumpy())
 
+# %% [markdown]
+# ## Data Augmentation
+#
+# I can do it all day until it covers every possibilities
+
 # %%
+import utils.helper
+
 augmenter = aug2conv.Augmenter(img1)
 auggedUp = augmenter.aug1(img1)
-plt.imshow(auggedUp[55, :, :].asnumpy())
+utils.helper.viewWeights(auggedUp)
+
+# %% [markdown]
+# ## Data Augmentation - Start Learning!
+#
+# <img src="assets/skip1Net.png"><img src="assets/skip1Title.png">
+#     
+# - Highway only bypassing Linear/FC/~~Dense/Perceptron~~
+#     
+#     - Designed to break symmetry at saddle points*
+#
+#     - WITHOUT initialisation (all weights start with 0)
+#
+# - Plain old Linear/FC
+#
+#     - 10x10 => one-hot 1~10 => ReLU
+#    
+# [*] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation” NIPS 2017, pp. 1–11.
 
 # %%
 
@@ -98,10 +128,10 @@ lossFn = glu.loss.SoftmaxCrossEntropyLoss()
 # %%
 
 @dataclass
-class Skip(glu.HybridBlock):
+class HWY(glu.HybridBlock):
 
     def __init__(self, layers: Tuple):
-        super(Skip, self).__init__()
+        super(HWY, self).__init__()
         self.delegate = glu.nn.HybridSequential()
         self.delegate.add(*layers)
 
@@ -126,7 +156,7 @@ def newModel() -> glu.nn.HybridSequential:
     model = glu.nn.HybridSequential()
     # with model.name_scope():
     model.add(
-        Skip((
+        HWY((
             glu.nn.Dense(100),
         )),
         glu.nn.Activation('relu'),
@@ -145,14 +175,15 @@ def newModel() -> glu.nn.HybridSequential:
 
 # %%
 
-import utils.helper
-
 model = newModel()
 model.forward(imgs.as_in_context(CTX))
 
 fc1 = model[0].getLayers()[0]
 utils.helper.viewFCWeights(fc1)
 
+
+# %% [markdown]
+# ## Data Augmentation - On Raw Dataset
 
 # %%
 def train(
@@ -222,10 +253,8 @@ utils.helper.view_classify(imgs[0], ps[0])
 fc1 = model[0].getLayers()[0]
 utils.helper.viewFCWeights(fc1)
 
-# %%
-
-fc3 = model[len(model) - 1]
-utils.helper.viewFCWeights(fc3)
+# %% [markdown]
+# ## Data Augmentation - On *Augmented* Dataset
 
 # %%
 
@@ -238,7 +267,13 @@ augModel = train("aug", aug=augmenter.augFirstTuple)
 fc1 = augModel[0].getLayers()[0]
 utils.helper.viewFCWeights(fc1)
 
+# %% [markdown]
+# ## Data Augmentation
+#
+# - How did this happen? (you probably want to try this on neural-ODE)
+#
+# <img src="assets/jon-batiste-reaction.gif">
+
 # %%
 
-fc3 = augModel[len(augModel) - 1]
-utils.helper.viewFCWeights(fc3)
+

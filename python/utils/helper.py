@@ -88,7 +88,11 @@ def view_classify(img: NDArray, ps: NDArray, version="MNIST"):
 def viewFCWeights(fc: Dense, inShape=(10, 10)):
     weight = fc.weight.data()
 
-    dOut, dIn = weight.shape
+    viewWeights(weight, inShape)
+
+
+def viewWeights(w: NDArray, inShape=(10, 10)):
+    dOut = w.shape[0]
     dOutSqrt = int(math.sqrt(dOut))
     if dOutSqrt ** 2 < dOut:
         dOutSqrt += 1
@@ -98,7 +102,7 @@ def viewFCWeights(fc: Dense, inShape=(10, 10)):
     for x in range(0, dOutSqrt):
         for y in range(0, dOutSqrt):
             if ii < dOut:
-                imshow(weight[ii].reshape(inShape).asnumpy().squeeze(), ax=axs[x, y])
+                imshow(w[ii].reshape(inShape).asnumpy().squeeze(), ax=axs[x, y])
             ii += 1
 
     plt.tight_layout()

@@ -21,10 +21,14 @@
 # %%
 # %load_ext autoreload
 # %autoreload 2
+# %matplotlib inline
 
 # %%
 import os
 import sys
+from typing import Tuple
+
+from dataclasses import dataclass
 
 if '' in sys.path:
     sys.path.remove('')
@@ -33,7 +37,7 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-print(sys.path)
+# print(sys.path)
 
 import networkx as nx
 
@@ -41,25 +45,26 @@ from graphPlot import drawGraph
 from const import *
 
 plt.rcParams['figure.figsize'] = [10, 10]
+# print(plt.rcParams['figure.figsize'])
 
 # %%
 
 g = nx.DiGraph(directed=True)
 
-schNet = "schNet\n(Nature Communication 2016)"
+schNet = "schNet\n(Nature\nCommunication\n2016)"
 groupInv = "Group Invariant CNN\n(ICML 2016)"
 steerable = "Steerable CNNs\n(ICLR 2017)"
 harmonic = "Harmonic CNNs\n(CVPR 2017)"
 spherical = "Spherical CNNs\n(ICLR 2018 best paper)"
 tensorField = "*Tensor Field Net*\n(NOT peer-reviewed!)"
-clebNet = "Clebsch-Gordan Net\n(NIPS 2018)"
+cgNet = "Clebsch-Gordan Net\n(NIPS 2018)"
 
 g.add_edge(schNet, tensorField)
 g.add_edge(groupInv, steerable)
 g.add_edge(harmonic, spherical)
 g.add_edge(steerable, spherical)
 g.add_edge(spherical, tensorField)
-g.add_edge(tensorField, clebNet)
+g.add_edge(tensorField, cgNet)
 
 drawGraph(g)
 

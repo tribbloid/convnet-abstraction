@@ -15,9 +15,6 @@
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # # ConvNet Abstraction
 
-# %% [markdown]
-# ## Overview
-
 # %%
 # %load_ext autoreload
 # %autoreload 2
@@ -37,7 +34,7 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-print(sys.path)
+# print(sys.path)
 
 import networkx as nx
 
@@ -45,13 +42,17 @@ from graphPlot import drawGraph
 from const import *
 
 plt.rcParams['figure.figsize'] = [10, 10]
-print(plt.rcParams['figure.figsize'])
+# print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
 # ## Data Augmentation
 #
-# - is a higher-order function$*$, specifically, a unary (arity=1) operator: $A_{ug}$ that change a signal to anther signal
-#     - (as in "Laplace operator" & "operator overloading")
+# - $\Bigg \{ A_{ug}, U_{ga}, G_{au} ...... \Bigg \}$
+#
+# - $\subset \text{unary operator}: Signal \Longrightarrow Signal $ (as in "Laplace Operator" & "Operator Overloading")
+#     
+# - $\subset \text{higher-order function}$ (as in "Functional Programming")
+#
 
 # %%
 
@@ -83,38 +84,29 @@ drawGraph(g, font='humor sans', arrow='-|>')
 plt.show()
 
 # %%
+# example too trivial, should be deleted
 list(map(lambda x: x * x, range(1, 5)))  # Map: (R -> R) -> (R^n -> R^n)
 
 # %% [markdown]
-# - can be applied to an ordindary function: $A_{ug} \circ f(x)$
-#
-# - can be applied with operand delimiter to a multivariable function: $A_{ug}|_{x} \circ U_{ag}|_{y} \circ w(x, y)$
-
-# %% [markdown]
-# ## Data Augmentation
-#
-# Is very situational:
+# ## Data Augmentation is Situational
 #     
 # - With gravity vs without gravity
 #
 # - [insert pictures]
 
 # %% [markdown]
-# ## Data Augmentation
-#
-# Is very situational:
+# ## Data Augmentation is Situational
 #     
-# - Fixed air pressure vs dependent air pressure
+# - Fixed air pressure vs correlated air pressure
 #
 # - [Insert pictures]
 
 # %% [markdown]
-# ## Data Augmentation
+# ## Data Augmentation - Equivariance
 #
 # Hypothesis 1 (**equivariance**): Should be applicable to any layer
 
 # %%
-
 
 g = nx.DiGraph(directed=True)
 
@@ -135,8 +127,8 @@ afs = [
 ]
 
 for i in range(0, 4):
-    g.add_edge(fs[i], fs[i + 1], text=' Layer >')
-    g.add_edge(afs[i], afs[i + 1], text=' Layer >')
+    g.add_edge(fs[i], fs[i + 1], text='||')
+    g.add_edge(afs[i], afs[i + 1], text='||')
 #     g.add_edge(fs[i], afs[i])
 
 g2 = g.copy()
@@ -151,7 +143,7 @@ drawGraph(g2, font='humor sans', layoutG=g)
 plt.show()
 
 # %% [markdown]
-# ## Data Augmentation
+# ## Data Augmentation - Transitivity
 #
 # Hypothesis 1 (equivariance): Should be applicable to any layer
 #
@@ -171,7 +163,7 @@ plt.show()
 #
 
 # %% [markdown]
-# ## Data Augmentation
+# ## Data Augmentation - Combining All Together
 #
 # Hypothesis 1 (equivariance): Should be applicable to any layer
 #
@@ -201,77 +193,16 @@ plt.show()
 
 
 # %% [markdown]
-# ## Data Augmentation
-#
-# **Combining all together**:
+# ## Data Augmentation - Combining All Together
 #
 # $$
 # f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bar{A}_{ug} \circ f(x), w_0(x)> _x
 # $$
 #
-# - Looks like ConvNet layer is nothing more than a FC layer with translation as family of augmentations!
+# - That explained it! Conv layers are just augmented Linear/FC/~~Dense/Perceptron~~ layers!
 #
-#
-
-# %% [markdown]
+# - But clearly they are not the only type
 #
 
-# %% [markdown]
-#
+# %%
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# ## Glossary
-#
-# - A monoid is anything compatible with MapReduce
-#
-# ```python
-# apple.merge(pen).merge(pineapple).merge(pen).merge(face).merge(palm) =
-# apple.merge(pen)                    # core 1
-#   .merge(pineapple.merge(pen))      # core 2
-#   .merge(face.merge(palm))          # core 3
-# ```
-
-# %% [markdown]
-# ## Glossary
-#
-# - A group member is an invertible monoid
-#
-# ```python
-# pineapplepen.merge(-pen) = pineapple
-# ```
-#
-# A commutative (Abelian) monoid/group member is an monoid i which order of reduce doesn't matter
-#
-# ```python
-# pineapple.merge(pen) = pen.merge(pineapple)
-# ```
-
-# %% [markdown]
-# ## Glossary
-#
-# - Higher-order function (a.k.a. operator) is 
-# - Group action is an operator that is also a group member
-#
-#
-
-
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# ## What is conv? (actually cross-correlation)
-#
-# assuming f_1, f_2: (F = R^n => S)
-#
-# defined for an operator A: F => F
-#
-# conv(f_1, f_2)(A) = <f_1(x), A {f_2(x)}> dx: (F => F) => S
-#
-# The common assumption is that operator A can be broken into left AL and right AR:
-#
-# A {f(x)} = AL(f(AR(x)))
-
-# %% [markdown]
-# ## How does it help? - Equivariance
-#
-# ... define equivariance
-
-# %% [markdown]
-#

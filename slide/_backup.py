@@ -107,10 +107,68 @@
 import numpy as np
 
 left = np.zeros((3, 2))
-right = np.zeros((2,4))
+right = np.zeros((2, 4))
 
 np.matmul(left, right)
 
-# %%
+# %% [markdown]
+#
+## Glossary
+
+# - A monoid is anything compatible with MapReduce
+#
+# ```python
+# apple.merge(pen).merge(pineapple).merge(pen).merge(face).merge(palm) =
+# apple.merge(pen)                    # core 1
+#   .merge(pineapple.merge(pen))      # core 2
+#   .merge(face.merge(palm))          # core 3
+# ```
+
+# %% [markdown]
+#
+## Glossary
+
+# - A group member is an invertible monoid
+#
+# ```python
+# pineapplepen.merge(-pen) = pineapple
+# ```
+#
+# A commutative (Abelian) monoid/group member is an monoid i which order of reduce doesn't matter
+#
+# ```python
+# pineapple.merge(pen) = pen.merge(pineapple)
+# ```
 
 
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+#
+
+# %% [markdown]
+# ## Glossary
+#
+# - Higher-order function (a.k.a. operator) is
+# - Group action is an operator that is also a group member
+#
+#
+
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## What is conv? (actually cross-correlation)
+#
+# assuming f_1, f_2: (F = R^n => S)
+#
+# defined for an operator A: F => F
+#
+# conv(f_1, f_2)(A) = <f_1(x), A {f_2(x)}> dx: (F => F) => S
+#
+# The common assumption is that operator A can be broken into left AL and right AR:
+#
+# A {f(x)} = AL(f(AR(x)))
+
+# %% [markdown]
+# ## How does it help? - Equivariance
+#
+# ... define equivariance
+
+# %% [markdown]
+#

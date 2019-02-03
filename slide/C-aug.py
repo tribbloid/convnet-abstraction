@@ -12,9 +12,6 @@
 #     name: python3
 # ---
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# # ConvNet Abstraction
-
 # %%
 # %load_ext autoreload
 # %autoreload 2
@@ -45,13 +42,13 @@ plt.rcParams['figure.figsize'] = [10, 10]
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
-# ## Data Augmentation
+# ## Data Augmentation - Black-boxsplanation
 #
 # - $\Bigg \{ A_{ug}, U_{ga}, G_{au} ...... \Bigg \}$
 #
 # - $\subset \text{unary operator}: Signal \Longrightarrow Signal $ (as in "Laplace Operator" & "Operator Overloading")
 #     
-# - $\subset \text{higher-order function}$ (as in "Functional Programming")
+# - $\subset \text{higher-order function}$ (as in functional programming and MapReduce)
 #
 
 # %%
@@ -157,7 +154,9 @@ plt.show()
 # \forall x : f(x) = \Big( \bar{A}_{ug} \circ f \Big) (x_0)
 # $$
 #
-# What does that even mean?
+# - (In most cases it is actually $x = \bar{A}_{ug} \circ x_0$)
+#    
+# So what does that supposed to mean?
 #
 # -- [insert pictures that demonstrates transitive augmentation]
 #
@@ -201,8 +200,11 @@ plt.show()
 #
 # - That explained it! Conv layers are just augmented Linear/FC/~~Dense/Perceptron~~ layers!
 #
-# - But clearly they are not the only type
+# [augmented]
+#
+# - First of its kind but not the last
 #
 
 # %%
+
 

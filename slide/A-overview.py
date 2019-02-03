@@ -12,12 +12,6 @@
 #     name: python3
 # ---
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# # ConvNet Abstraction
-
-# %% [markdown]
-# ## Overview
-
 # %%
 # %load_ext autoreload
 # %autoreload 2
@@ -47,17 +41,38 @@ from const import *
 plt.rcParams['figure.figsize'] = [10, 10]
 # print(plt.rcParams['figure.figsize'])
 
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# # **ConvNet Abstraction**
+#
+# ## *TDLS Feb 11. 2019*
+#
+# ## Chris Dryden
+#
+# - [missing]
+#
+# ## Peng Cheng
+#
+# - pc175@uowmail.edu.au
+#
+# - datapassports.com
+#
+# - github.com/tribbloid
+
+# %% [markdown]
+# ## **Overview**
+
 # %%
 
 g = nx.DiGraph(directed=True)
 
 schNet = "schNet\n(Nature\nCommunication\n2016)"
-groupInv = "Group Invariant CNN\n(ICML 2016)"
+groupInv = "Group Equivariant ConvNet\n(ICML 2016)"
 steerable = "Steerable CNNs\n(ICLR 2017)"
 harmonic = "Harmonic CNNs\n(CVPR 2017)"
 spherical = "Spherical CNNs\n(ICLR 2018 best paper)"
-tensorField = "*Tensor Field Net*\n(NOT peer-reviewed!)"
+tensorField = "*Tensor Field Net*\n(not peer-reviewed!)"
 cgNet = "Clebsch-Gordan Net\n(NIPS 2018)"
+threeDSteerable = "3D Steerable CNNs\n(NIPS 2018)"
 
 g.add_edge(schNet, tensorField)
 g.add_edge(groupInv, steerable)
@@ -65,6 +80,7 @@ g.add_edge(harmonic, spherical)
 g.add_edge(steerable, spherical)
 g.add_edge(spherical, tensorField)
 g.add_edge(tensorField, cgNet)
+g.add_edge(tensorField, threeDSteerable)
 
 drawGraph(g)
 
@@ -78,7 +94,7 @@ plt.show()
 # [Eternal winter covers the land]
 
 # %% [markdown]
-# ## Pre-ConvNet - Linear Fully Connected Dense (FC) Layer
+# ## Pre-ConvNet - Linear/Fully Connected/~~Dense/Perceptron~~ Layer
 #
 # In pursuing of unbounded representation power
 #
@@ -100,8 +116,8 @@ g.add_edge(" == layer ==", "$f_{++}(.)$")
 g.add_edge("$f_{++}(.)$", "...")
 
 dot = "$f(.)$\nsignal"
-fc = "$<f(x), w(x, .)> d x$\nlinear fully-connected dense"
-nl = "$\phi(<f(x), w(x, .)> d x)$\nnon-linear activation"
+fc = "$<f(x), w(x, .)> d x$\nFC"
+nl = "$\phi(<f(x), w(x, .)> d x)$\nactivation"
 dot2 = "$f_+(.)$\nhigh-level signal"
 # hw = "highway?"
 
@@ -122,15 +138,12 @@ drawGraph(g2, font='humor sans', layoutG=g)
 plt.show()
 
 # %% [markdown]
-# ## Pre-ConvNet - Fully Connected LayersLinear Fully Connected Dense (FC) Layer
+# ## Pre-ConvNet - Linear/Fully Connected/~~Dense/Perceptron~~ Layer is Weak
 #
-# Considerably weak in today's standard
-# - e.g. easily confused by turning its head
+# [insert example that shows it failing to generalise beyond changing of POV]
 
 # %% [markdown]
-# ## Invariant Layer / Bag of Features?
-#
-# (DON'T DO THIS)
+# ## Invariant Layer / Bag of Features? (DON'T DO THIS)
 #
 # [picasso effect]
 
@@ -139,8 +152,11 @@ plt.show()
 #
 # [insert example pictures]
 #
-# - Sounds like in the right direction
-#     - maybe a bit slow in practice
-#     - even in convex case SGD "theoretically probably" converges equally fast
-#     - but it works fines
-# - Wait a second, how about a better idea?
+# - Sounds like the right direction
+#     - a bit slow in practice
+#     - even in "convex case" SGD "theoretically probably" converges equally fast
+# - How about a better idea?
+
+# %%
+
+

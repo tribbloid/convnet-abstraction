@@ -13,9 +13,6 @@
 #     name: python3
 # ---
 
-# %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# # ConvNet Abstraction
-
 # %%
 # %load_ext autoreload
 # %autoreload 2

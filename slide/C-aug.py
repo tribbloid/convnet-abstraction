@@ -35,10 +35,10 @@ if module_path not in sys.path:
 
 import networkx as nx
 
-from graphPlot import drawGraph
+from graphPlot import drawGraph, SIZE
 from const import *
 
-plt.rcParams['figure.figsize'] = [10, 10]
+plt.rcParams['figure.figsize'] = SIZE
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
@@ -48,7 +48,7 @@ plt.rcParams['figure.figsize'] = [10, 10]
 #
 # - $\subset \text{unary operator}: Signal \Longrightarrow Signal $ (as in "Laplace Operator" & "Operator Overloading")
 #     
-# - $\subset \text{higher-order function}$ (as in functional programming and MapReduce)
+# - $\subset \text{**higher-order function**}$ (as in functional programming and MapReduce)
 #
 
 # %%
@@ -59,9 +59,9 @@ n = 'numbers'
 n2 = ' numbers'
 f = 'function'
 f2 = ' function'
-o = 'operator*'
-c = 'currying*'
-fl = 'functional*'
+o = '**operator**'
+c = '**currying**'
+fl = '**functional**'
 
 g.add_nodes_from([n])
 g.add_nodes_from([f, fl, o, c])
@@ -76,13 +76,19 @@ g.add_edge(fl, n2)
 g.add_edge(n, c, wedge=True)
 g.add_edge(c, f2)
 
-drawGraph(g, font='humor sans', arrow='-|>')
+drawGraph(g, font_family='humor sans',  arrow='-|>')
 
 plt.show()
 
 # %%
-# example too trivial, should be deleted
-list(map(lambda x: x * x, range(1, 5)))  # Map: (R -> R) -> (R^n -> R^n)
+list(map(lambda x: x * x, range(1, 5)))  # Map: [R -> R] -> [R^n -> R^n]
+
+# %% [markdown]
+# ## Data Augmentation is Situational
+#     
+# - Valid vs invalid affine transformation
+#
+# - [insert pictures]
 
 # %% [markdown]
 # ## Data Augmentation is Situational
@@ -133,9 +139,9 @@ g2 = g.copy()
 for i in range(0, 4):
     g2.add_edge(fs[i], afs[i], text='Augment')
 
-g2.add_edge(afs[0], fs[1], text='Invariant Layer (DON\'T DO THIS)')
+g2.add_edge(afs[0], fs[1], text='Invariant (DON\'T DO THIS)')
 
-drawGraph(g2, font='humor sans', layoutG=g)
+drawGraph(g2, layoutG=g)
 
 plt.show()
 
@@ -179,32 +185,19 @@ plt.show()
 # **Combining all together**:
 #
 # $$
-# f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bar{A}_{ug} \circ f(x), w_0(x)> _x
+# f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bbox[yellow]{\bar{A}_{ug} \circ f(x)}, w_0(x)> _x
 # $$
 #
 # Looks familiar yet?
 #
 # $$
-# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \int\limits_{x \in \text{Manifold}} f(\Delta + x) w_0(x) _x = <f(\Delta + x), w_0(x)> _x
+# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \int\limits_{x \in \text{domain}} f(\Delta + x) w_0(x) _x = <\bbox[yellow]{f(\Delta + x)}, w_0(x)> _x
 # $$
 #
 #
 
-
-# %% [markdown]
-# ## Data Augmentation - Combining All Together
-#
-# $$
-# f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bar{A}_{ug} \circ f(x), w_0(x)> _x
-# $$
-#
-# - That explained it! Conv layers are just augmented Linear/FC/~~Dense/Perceptron~~ layers!
-#
-# [augmented]
-#
-# - First of its kind but not the last
-#
 
 # %%
+
 
 

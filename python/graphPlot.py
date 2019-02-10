@@ -3,38 +3,69 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from mpl_toolkits.axisartist.axislines import SubplotZero
 
-def drawEdgesAndLabels(options, g, list):
-    nx.drawing.draw_networkx_edges(g, edgelist=list, arrows=True, **options)
-    nx.drawing.draw_networkx_edge_labels(g, edgelist=list, **options)
+SIZE = [14, 10]
 
-def drawGraph(g, font='dejavu sans', arrow='->', layoutG=None):
+
+def drawEdgesAndLabels(
+        options, g,
+        edgeFactory=lambda g: nx.get_edge_attributes(g, 'text')
+):
+    _options = {
+        **options,
+        'edge_labels': edgeFactory(g)
+    }
+    _labelOptions = {
+        **_options,
+        'bbox': dict(alpha=0.05, color='w')
+    }
+    nx.drawing.draw_networkx_edges(g, arrows=True, **_options)
+    nx.drawing.draw_networkx_edge_labels(g, **_labelOptions)
+
+
+def drawGraph(g, layoutG=None, **kwargs):
     if not layoutG:
         layoutG = g
 
-    sharedOpt = {
+    edges = g.edges.data()
+    tails = [e[0:2] for e in edges if ('wedge' in e[2])]
+    tailGraph = g.edge_subgraph(tails)
+
+    heads = [e[0:2] for e in edges if ('wedge' not in e[2])]
+    headGraph = g.edge_subgraph(heads)
+
+    defaultOpt = {
         'pos': nx.drawing.nx_agraph.graphviz_layout(layoutG, prog='dot'),
-        'node_size': 2000
+        'node_size': 2000,
+        'arrowstyle': '->',
+        'font': 'dejavu sans'
+    }
+    sharedOpt = {
+        **defaultOpt,
+        **kwargs
     }
 
     nodeOpt = {
         **sharedOpt,
         'node_color': 'white',
         'node_shape': "o",
-        #         'clip_on': False,
-        #         'Rotate': False,
-        'font_family': font
+        # 'font_family': 'dejavu sans'
     }
-    arrowHeadOpt = {
+
+    arrowOpt = {
         **sharedOpt,
         'node_shape': "s",
-        'edge_labels': nx.get_edge_attributes(g, 'text'),
         'width': 2,
-        'arrowstyle': 'wedge',
+        'edge_color': '#AAAAAA',
         'arrowsize': 30
     }
+
+    arrowHeadOpt = {
+        **arrowOpt
+    }
+
     arrowTailOpt = {
-        **arrowHeadOpt,
-        'arrowstyle': arrow
+        **arrowOpt,
+        'arrowstyle': 'wedge'
     }
 
     with plt.xkcd():
@@ -58,10 +89,5 @@ def drawGraph(g, font='dejavu sans', arrow='->', layoutG=None):
         nx.drawing.draw_networkx_nodes(g, **nodeOpt)
         nx.drawing.draw_networkx_labels(g, **nodeOpt)
 
-        edges = g.edges.data()
-
-        heads = [e for e in edges if ('wedge' in e[2])]
-        drawEdgesAndLabels(arrowHeadOpt, g, heads)
-
-        tails = [e for e in edges if ('wedge' not in e[2])]
-        drawEdgesAndLabels(arrowTailOpt, g, tails)
+        drawEdgesAndLabels(arrowHeadOpt, headGraph)
+        drawEdgesAndLabels(arrowTailOpt, tailGraph)

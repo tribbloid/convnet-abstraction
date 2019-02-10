@@ -8,5 +8,6 @@ matplotlib
 mypy
 mypy-extensions
 networkx
+pygraphviz
 dataclasses
 pytest

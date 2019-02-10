@@ -35,10 +35,10 @@ if module_path not in sys.path:
 
 import networkx as nx
 
-from graphPlot import drawGraph
+from graphPlot import drawGraph, SIZE
 from const import *
 
-plt.rcParams['figure.figsize'] = [10, 10]
+plt.rcParams['figure.figsize'] = SIZE
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
@@ -68,7 +68,7 @@ g = nx.DiGraph(directed=True)
 schNet = "schNet\n(Nature\nCommunication\n2016)"
 groupInv = "Group Equivariant ConvNet\n(ICML 2016)"
 steerable = "Steerable CNNs\n(ICLR 2017)"
-harmonic = "Harmonic CNNs\n(CVPR 2017)"
+harmonic = "Harmonic Net\n(CVPR 2017)"
 spherical = "Spherical CNNs\n(ICLR 2018 best paper)"
 tensorField = "*Tensor Field Net*\n(not peer-reviewed!)"
 cgNet = "Clebsch-Gordan Net\n(NIPS 2018)"
@@ -100,8 +100,8 @@ plt.show()
 #
 #
 # \begin{align}
-# & \text{(let $w$ be the weight function)} & f_+(x) &= \phi \circ \Big( \int\limits_{x \in \text{Manifold}} f(x) w(x, y) dx \Big) \\
-# & \text{(pardon me for abusing notation a bit)} & &= \phi \circ \Big( < f(x), w(x, y) > dx \Big)
+# & \text{($w$: weight of neurons)} & f_+(y) = \Phi \Big( f(x) \Big) &= \phi \Big( \int\limits_{x \in \text{domain}} f(x) w(x, y) dx \Big) \\
+# & \text{(pardon the abusing of notation)} & &= \phi \Big( < f(x), w(x, y) >_x \Big)
 # \end{align}
 
 # %%
@@ -115,8 +115,8 @@ g.add_edge("$f_+(.)$", " == layer ==")
 g.add_edge(" == layer ==", "$f_{++}(.)$")
 g.add_edge("$f_{++}(.)$", "...")
 
-dot = "$f(.)$\nsignal"
-fc = "$<f(x), w(x, .)> d x$\nFC"
+dot = "$f(.)$\ninput signal"
+fc = "$<f(x), w(x, .)> d x$\nlinear"
 nl = "$\phi(<f(x), w(x, .)> d x)$\nactivation"
 dot2 = "$f_+(.)$\nhigh-level signal"
 # hw = "highway?"
@@ -130,10 +130,7 @@ g2 = g.copy()
 g2.add_edge(dot, "$f(.)$", wedge=True)
 g2.add_edge(dot2, "$f_+(.)$", wedge=True)
 
-# g.add_edge(dot, hw)
-# g.add_edge(hw, dot2)
-
-drawGraph(g2, font='humor sans', layoutG=g)
+drawGraph(g2, g, font_family='humor sans')
 
 plt.show()
 
@@ -143,7 +140,7 @@ plt.show()
 # [insert example that shows it failing to generalise beyond changing of POV]
 
 # %% [markdown]
-# ## Invariant Layer / Bag of Features? (DON'T DO THIS)
+# ## Invariant Layer / Bag-of-words? (DON'T DO THIS)
 #
 # [picasso effect]
 
@@ -154,8 +151,9 @@ plt.show()
 #
 # - Sounds like the right direction
 #     - a bit slow in practice
-#     - even in "convex case" SGD "theoretically probably" converges equally fast
-# - How about a better idea?
+#     - even in **convex case** SGD "theoretically probably" converges equally fast
+#     - but you saw some **convex cases** on TV?
+# - SO, How about a better idea?
 
 # %%
 

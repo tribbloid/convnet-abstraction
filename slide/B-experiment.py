@@ -36,10 +36,10 @@ if module_path not in sys.path:
 
 import networkx as nx
 
-from graphPlot import drawGraph
+from graphPlot import drawGraph, SIZE
 from const import *
 
-plt.rcParams['figure.figsize'] = [10, 10]
+plt.rcParams['figure.figsize'] = SIZE
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
@@ -99,18 +99,31 @@ utils.helper.viewWeights(auggedUp)
 # %% [markdown]
 # ## Data Augmentation - Start Learning!
 #
-# <img src="assets/skip1Net.png"><img src="assets/skip1Title.png">
-#     
-# - Highway only bypassing Linear/FC/~~Dense/Perceptron~~
+# ### **2 layers only**
+#
+# 1. Highway only bypassing Linear/FC/~~Dense/Perceptron~~
 #     
 #     - Designed to break symmetry at saddle points*
 #
 #     - WITHOUT initialisation (all weights start with 0)
+#     
+#     - 10x10 => 10x10 => ReLU
 #
-# - Plain old Linear/FC
+# 2. Plain old Linear/FC
 #
 #     - 10x10 => one-hot 1~10 => ReLU
 #    
+# ---
+#
+# [*] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation” NIPS 2017, pp. 1–11.
+
+# %% [markdown]
+# ## Data Augmentation - Start Learning!
+#
+# <img src="assets/skip1Net.png" width="400">
+#
+# ---
+#
 # [*] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation” NIPS 2017, pp. 1–11.
 
 # %%
@@ -172,6 +185,7 @@ def newModel() -> glu.nn.HybridSequential:
 
 # %%
 
+# Remember all weights start with 0
 model = newModel()
 model.forward(imgs.as_in_context(CTX))
 

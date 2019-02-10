@@ -25,6 +25,7 @@ networkx==2.2
 numpy==1.14.6
 pluggy==0.8.1             # via pytest
 py==1.7.0                 # via pytest
+pygraphviz==1.5
 pyparsing==2.3.1          # via matplotlib
 pytest==4.2.0
 python-dateutil==2.7.5    # via matplotlib

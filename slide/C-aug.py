@@ -108,6 +108,8 @@ list(map(lambda x: x * x, range(1, 5)))  # Map: [R -> R] -> [R^n -> R^n]
 # ## Data Augmentation - Equivariance
 #
 # Hypothesis 1 (**equivariance**): Should be applicable to any layer
+#
+# [in the next slide add more visual explain with equivariance example]
 
 # %%
 
@@ -165,6 +167,8 @@ plt.show()
 # So what does that supposed to mean?
 #
 # -- [insert pictures that demonstrates transitive augmentation]
+#
+# -- prefer a guy driving a car
 #
 
 # %% [markdown]

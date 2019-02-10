@@ -97,6 +97,10 @@ plt.rcParams['figure.figsize'] = SIZE
 # %% [markdown]
 # ## Going Spectral - What's the point?
 #
+# [immediately list the benefits]
+#
+# [keep the G-theorem, move the proof to appendix]
+#
 # Remember G-conv?
 #
 # \begin{align}
@@ -118,6 +122,8 @@ plt.rcParams['figure.figsize'] = SIZE
 # & & &= < \widehat{A_{ug}}(j) \circ \widehat{f}(i), \widehat{w_0}(i) >_i \text{  (looks like convolution theorem still works here)} \\
 # & \text{(ONLY IF $A_{ug}$ is also distance-preserving)} & &= <\widehat{f}(i), \widehat{A_{ug}^{-1}}(j) \circ \widehat{w_0}(i) >_i 
 # \end{align}
+#
+# [more intuition on the G-conv theorem part]
 #
 # Convnet layers are small and use low-frequency features, so:
 #

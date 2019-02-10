@@ -98,6 +98,8 @@ plt.show()
 #
 # In pursuing of unbounded representation power
 #
+# [avoid bra-ket and /int symbol at all cost]
+#
 #
 # \begin{align}
 # & \text{($w$: weight of neurons)} & f_+(y) = \Phi \Big( f(x) \Big) &= \phi \Big( \int\limits_{x \in \text{domain}} f(x) w(x, y) dx \Big) \\
@@ -155,6 +157,17 @@ plt.show()
 #     - but you saw some **convex cases** on TV?
 # - SO, How about a better idea?
 
-# %%
+# %% [markdown]
+# ## Data Augmentation
+#
+# - onerous but possible in 2d, translation
+# - intolerable in 3d, rotation
+#
+# - aggregate all examples here
+#
+# including fisheye camera, molecule, obstacle
 
 
+
+# %% [markdown]
+# Remember: first goal, then method.

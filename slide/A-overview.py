@@ -42,15 +42,17 @@ plt.rcParams['figure.figsize'] = SIZE
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
-# # **ConvNet Abstraction**
+# # **Tensor Field Network** (and other ConvNet Generalisations)
 #
-# ## *TDLS Feb 11. 2019*
+# ## *TDLS - Feb 11. 2019*
 #
-# ## Chris Dryden
+# ### **Chris Dryden**
 #
-# - [missing]
+# - [neeed your email and company]
 #
-# ## Peng Cheng
+# - github.com/chrisdryden
+#
+# ### **Peng Cheng**
 #
 # - pc175@uowmail.edu.au
 #
@@ -87,23 +89,19 @@ drawGraph(g)
 plt.show()
 
 # %% [markdown]
-# ## Pre-ConvNet
+# ## Pre-ConvNet (1960-1987)
 #
-# 1960-1987
+# <img src="assets/winterIsComing.jpg">
 #
-# [Eternal winter covers the land]
 
 # %% [markdown]
 # ## Pre-ConvNet - Linear/Fully Connected/~~Dense/Perceptron~~ Layer
 #
-# In pursuing of unbounded representation power
-#
-# [avoid bra-ket and /int symbol at all cost]
-#
+# In pursuing of unbounded representation/approximation power
 #
 # \begin{align}
-# & \text{($w$: weight of neurons)} & f_+(y) = \Phi \Big( f(x) \Big) &= \phi \Big( \int\limits_{x \in \text{domain}} f(x) w(x, y) dx \Big) \\
-# & \text{(pardon the abusing of notation)} & &= \phi \Big( < f(x), w(x, y) >_x \Big)
+# & \text{($w$ are weight of neurons)} & f_+(y) = \Phi \Big( f(x) \Big) &= \phi \Big( \sum_{x \in \text{domain}} f(x) w(x, y) \Big) \\
+# & \text{(pardon the abusing of notation)} & &= \phi \Big( \bbox[yellow]{< f(x), w(x, y) >_x} \Big)
 # \end{align}
 
 # %%
@@ -111,16 +109,16 @@ plt.show()
 
 g = nx.DiGraph(directed=True)
 
-g.add_edge("$f(.)$", "== layer ==")
-g.add_edge("== layer ==", "$f_+(.)$")
-g.add_edge("$f_+(.)$", " == layer ==")
+g.add_edge("$f(x)$", "== layer ==")
+g.add_edge("== layer ==", "$f_+(y)$")
+g.add_edge("$f_+(y)$", " == layer ==")
 g.add_edge(" == layer ==", "$f_{++}(.)$")
 g.add_edge("$f_{++}(.)$", "...")
 
 dot = "$f(.)$\ninput signal"
-fc = "$<f(x), w(x, .)> d x$\nlinear"
-nl = "$\phi(<f(x), w(x, .)> d x)$\nactivation"
-dot2 = "$f_+(.)$\nhigh-level signal"
+fc = "$<f(x), w(x, y)> d x$\nlinear"
+nl = "$\phi(<f(x), w(x, y)> d x)$\nactivation"
+dot2 = "$f_+(y)$\nhigh-level signal"
 # hw = "highway?"
 
 g.add_edge(dot, fc)
@@ -129,45 +127,129 @@ g.add_edge(nl, dot2)
 
 g2 = g.copy()
 
-g2.add_edge(dot, "$f(.)$", wedge=True)
-g2.add_edge(dot2, "$f_+(.)$", wedge=True)
+g2.add_edge(dot, "$f(x)$", wedge=True)
+g2.add_edge(dot2, "$f_+(y)$", wedge=True)
 
 drawGraph(g2, g, font_family='humor sans')
 
 plt.show()
 
 # %% [markdown]
-# ## Pre-ConvNet - Linear/Fully Connected/~~Dense/Perceptron~~ Layer is Weak
+# ## Pre-ConvNet - Linear Layer
 #
-# [insert example that shows it failing to generalise beyond changing of POV]
+# <img src="assets/classify-raw.jpg"><img src="assets/classify-shifted.jpg">
+#
+# ---
+#  
+# (you'll see this later in experiment)
 
 # %% [markdown]
-# ## Invariant Layer / Bag-of-words? (DON'T DO THIS)
+# ## Invariant Layer / Bag-of-words?
 #
-# [picasso effect]
-
-# %% [markdown]
-# ## Data Augmentation
+# - Don't do this
 #
-# [insert example pictures]
+# <img src="assets/picassoEffect.jpg">
 #
-# - Sounds like the right direction
-#     - a bit slow in practice
-#     - even in **convex case** SGD "theoretically probably" converges equally fast
-#     - but you saw some **convex cases** on TV?
-# - SO, How about a better idea?
 
 # %% [markdown]
 # ## Data Augmentation
 #
-# - onerous but possible in 2d, translation
-# - intolerable in 3d, rotation
+# - Good catch
 #
-# - aggregate all examples here
+# <img src="assets/data-aug.png">
 #
-# including fisheye camera, molecule, obstacle
+
+# %% [markdown]
+# ## Data Augmentation
+#
+# - Too slow in practice
+#     - In **convex case** SGD "theoretically probably" converges equally fast
+#     - otherwise it "kind of works" but with much less efficiency
+#
+# --- 
+#
+# 2D translation
+#
+# <img src="assets/image-pan.gif" width="600px">
+#
+
+# %% [markdown]
+# ## Data Augmentation
+#
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
+#
+# ---
+#
+# 2D translation x 1D rotation, you'll see this fairly often on some cameras
+#
+# <img src="assets/human-0g.jpg"><img src="assets/drone-overhead.png">
+#
+
+# %% [markdown]
+# ## Data Augmentation
+#
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
+#
+# ---
+#
+# 3D rotation
+#
+# <img src="assets/fisheye-pan.gif">
+#
+#
+#
+#
 
 
 
 # %% [markdown]
-# Remember: first goal, then method.
+# ## Data Augmentation
+#
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
+#
+# ---
+#
+# 3D translation x 3D rotation
+#
+# <img src="assets/point-cloud-6d.gif" width="800px">
+#
+
+# %% [markdown]
+# ## Data Augmentation
+#
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
+#
+# ---
+#
+# How about air pressure depending on translation?
+#
+# <img src="assets/IAS-vs-TAS.jpg">
+#
+
+# %% [markdown]
+# ## Data Augmentation
+#
+# How about a better idea?
+#
+# - Instead of augmenting, we hard-bake such prior knowledge into the network that yield identical result!
+#
+#
+# <img src="assets/aerial-g-conv.jpg" width="500">
+#
+# ---
+#
+# # **Answer**
+#
+# augmentation types | solution
+#  --- | --- 
+# 2d translation | ConvNet
+# **others** | **G-ConvNet**
+# - 2d translation + 90$^{\circ}$ rotation | Group Equivariant CNNs
+# - 2d translation + rotation | Harmonic Net
+# - 3d rotation | Spherical CNNs
+# - 3d translation + rotation | Tensor Field Net
+#
+
+# %%
+
+

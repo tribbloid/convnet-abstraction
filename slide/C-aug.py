@@ -42,7 +42,7 @@ plt.rcParams['figure.figsize'] = SIZE
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
-# ## Data Augmentation - Black-boxsplanation
+# ## Data Augmentation
 #
 # - $\Bigg \{ A_{ug}, U_{ga}, G_{au} ...... \Bigg \}$
 #
@@ -79,30 +79,6 @@ g.add_edge(c, f2)
 drawGraph(g, font_family='humor sans',  arrow='-|>')
 
 plt.show()
-
-# %%
-list(map(lambda x: x * x, range(1, 5)))  # Map: [R -> R] -> [R^n -> R^n]
-
-# %% [markdown]
-# ## Data Augmentation is Situational
-#     
-# - Valid vs invalid affine transformation
-#
-# - [insert pictures]
-
-# %% [markdown]
-# ## Data Augmentation is Situational
-#     
-# - With gravity vs without gravity
-#
-# - [insert pictures]
-
-# %% [markdown]
-# ## Data Augmentation is Situational
-#     
-# - Fixed air pressure vs correlated air pressure
-#
-# - [Insert pictures]
 
 # %% [markdown]
 # ## Data Augmentation - Equivariance
@@ -141,7 +117,7 @@ g2 = g.copy()
 for i in range(0, 4):
     g2.add_edge(fs[i], afs[i], text='Augment')
 
-g2.add_edge(afs[0], fs[1], text='Invariant (DON\'T DO THIS)')
+g2.add_edge(afs[0], fs[1], text='Bag-of-Words (DON\'T DO THIS)')
 
 drawGraph(g2, layoutG=g)
 
@@ -161,8 +137,6 @@ plt.show()
 # $$
 # \forall x : f(x) = \Big( \bar{A}_{ug} \circ f \Big) (x_0)
 # $$
-#
-# - (In most cases it is actually $x = \bar{A}_{ug} \circ x_0$)
 #    
 # So what does that supposed to mean?
 #

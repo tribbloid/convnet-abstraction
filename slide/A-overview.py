@@ -48,7 +48,7 @@ plt.rcParams['figure.figsize'] = SIZE
 #
 # ### **Chris Dryden**
 #
-# - [neeed your email and company]
+# - christopher.paul.dryden@gmail.com
 #
 # - github.com/chrisdryden
 #
@@ -197,11 +197,21 @@ plt.show()
 #
 # <img src="assets/fisheye-pan.gif">
 #
-#
-#
-#
 
-
+# %% [markdown]
+# ## Data Augmentation
+#
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
+#
+# ---
+#
+# 4D affine transformations
+#
+# <img src="assets/airr.png">
+#
+# ---
+#
+# [*] Image Courtesy: AIRR https://thedroneracingleague.com/airr/
 
 # %% [markdown]
 # ## Data Augmentation
@@ -249,5 +259,6 @@ plt.show()
 #
 
 # %%
+
 
 

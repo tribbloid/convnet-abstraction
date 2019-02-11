@@ -380,6 +380,15 @@ plt.show()
 #
 #
 
+# %% [markdown]
+# ## Tensor Field Network (Not Peer Reviewed!)
+#
+# | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
+# | --- |---|---|---
+# | domain | $R^3$ | $O(3)$ | $O(3) \cong R^3 x SO(3)$ (3d translation & rotation)
+#
+# ---
+
 # %%
 g = nx.DiGraph(directed=True)
 
@@ -418,6 +427,4 @@ plt.show()
 
 # %%
 
-
-# %%
 

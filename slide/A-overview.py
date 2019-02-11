@@ -118,7 +118,7 @@ g.add_edge("$f_{++}(.)$", "...")
 dot = "$f(.)$\ninput signal"
 fc = "$<f(x), w(x, y)> d x$\nlinear"
 nl = "$\phi(<f(x), w(x, y)> d x)$\nactivation"
-dot2 = "$f_+(y)$\nhigh-level signal"
+dot2 = "$f_+(y)$\nhigh-level features"
 # hw = "highway?"
 
 g.add_edge(dot, fc)
@@ -137,11 +137,11 @@ plt.show()
 # %% [markdown]
 # ## Pre-ConvNet - Linear Layer
 #
-# <img src="assets/classify-raw.jpg"><img src="assets/classify-shifted.jpg">
+# <img src="assets/kardashian-counterexample.png">
 #
 # ---
 #  
-# (you'll see this later in experiment)
+# [*] Image courtesey https://www.quora.com/What-is-the-difference-between-equivariance-and-invariance-in-Convolution-neural-networks
 
 # %% [markdown]
 # ## Invariant Layer / Bag-of-words?
@@ -182,7 +182,8 @@ plt.show()
 #
 # 2D translation x 1D rotation, you'll see this fairly often on some cameras
 #
-# <img src="assets/human-0g.jpg"><img src="assets/drone-overhead.png">
+# <img src="assets/human-0g.jpg"> | <img src="assets/drone-overhead.png">
+# --- | ---
 #
 
 # %% [markdown]
@@ -221,7 +222,7 @@ plt.show()
 #
 # ---
 #
-# How about air pressure depending on translation?
+# Air pressure depending on translation
 #
 # <img src="assets/IAS-vs-TAS.jpg">
 #
@@ -231,16 +232,13 @@ plt.show()
 #
 # How about a better idea?
 #
-# - Instead of augmenting, we hard-bake such prior knowledge into the network that yield identical result!
-#
+# - Instead of augmenting, we hard-bake such prior knowledge into the network to yield identical result!
 #
 # <img src="assets/aerial-g-conv.jpg" width="500">
 #
 # ---
 #
-# # **Answer**
-#
-# augmentation types | solution
+# Augmentation types | Answer
 #  --- | --- 
 # 2d translation | ConvNet
 # **others** | **G-ConvNet**

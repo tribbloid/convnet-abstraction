@@ -43,11 +43,31 @@ plt.rcParams['figure.figsize'] = SIZE
 # print(plt.rcParams['figure.figsize'])
 
 # %% [markdown]
-# ## Conventional CNNs
+# ## G-ConvNet
 #
 # $$f_+(y) = <A_{ug} \circ f(x), w_0(x)> _x$$
 #
-# - this implies a bijection $y \longleftrightarrow A_{ug}$
+# - this implies bijection/isomorphism $y \longleftrightarrow A_{ug}$
+# - ... and high-level features usually have more dimensions $\{x\} \subset \{y\}$
+#
+# ---
+#
+# All of the followings are concrete subclasses:
+#
+#
+# Augmentation types | Answer
+#  --- | --- 
+# 2d translation | ConvNet
+# **others** | **G-ConvNet**
+# - 2d translation + 90$^{\circ}$ rotation | Group Equivariant CNNs
+# - 2d translation + rotation | Harmonic Net
+# - 3d rotation | Spherical CNNs
+# - 3d translation + rotation | Tensor Field Net
+#
+#
+
+# %% [markdown]
+# ## ConvNet
 #
 # | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
 # | ---|---------------|----------------|-------------------------------
@@ -57,10 +77,13 @@ plt.rcParams['figure.figsize'] = SIZE
 #
 # - That's how it happens! ConvNet layers are just augmented FC layers!
 # - First of its kind but not the last
-# - A rare case when domain $X = Y$, in all other cases $X \subset Y$
+# - A rare case when high-level feature domain $\{y\} = \{x\}$, in all other cases $\{y\} \supset \{x\}$
+#
+# <img src="assets/alexnet.png">
+#
 
 # %% [markdown]
-# ## Conventional CNNs
+# ## ConvNet
 #
 # | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
 # | ---|---------------|----------------|-------------------------------
@@ -172,18 +195,3 @@ plt.show()
 # ---
 #
 # [*] T. S. Cohen and M. Welling, “Group Equivariant Convolutional Networks,” ICML 2016.
-
-# %% [markdown]
-# ## Steerable CNNs (ICLR 2017*)
-#
-# ---
-#
-# ---
-#
-# [*] T. S. Cohen and M. Welling, “Steerable CNNs,” ICLR 2017.
-
-
-# %%
-
-
-

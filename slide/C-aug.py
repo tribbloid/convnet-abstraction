@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ---
 # jupyter:
 #   jupytext:
@@ -44,12 +45,13 @@ plt.rcParams['figure.figsize'] = SIZE
 # %% [markdown]
 # ## Data Augmentation
 #
-# - $\Bigg \{ A_{ug}, U_{ga}, G_{au} ...... \Bigg \}$
+# - Form a group $\Bigg \{ A_{ug}, U_{ga}, G_{au} ...... \Bigg \}$, sometimes not commutative/Abelian
 #
-# - $\subset \text{unary operator}: Signal \Longrightarrow Signal $ (as in "Laplace Operator" & "Operator Overloading")
+# - $\subset \text{unary operator}: Signal \Longrightarrow Signal $ (making it a group action)
 #     
-# - $\subset \text{**higher-order function**}$ (as in functional programming and MapReduce)
+# - $\subset \text{**higher-order function**}$
 #
+# ---
 
 # %%
 
@@ -81,11 +83,86 @@ drawGraph(g, font_family='humor sans',  arrow='-|>')
 plt.show()
 
 # %% [markdown]
+# ## Data Augmentation $\Longrightarrow$ G-ConvNet
+#
+# **Lemma**: If the augmentation group $\{ A_{ug} \}$ satisifes:
+#
+# - **Transitivity**: for any pair of points $x, y$ and any function $f$, we can always find an augmentation that can transform value $f(x)$ to point $y$
+# - **Group Equivariance**: applying an augmentation $A_{ug}$ on the input has the same effect as applying an augmentation $U_{ga}$ from the same group on the output
+#
+# Then a fully connected layer:
+#
+# $$
+# f_+(y) = <f(x), w(x, y)> _x
+# $$
+#
+# collapses to a group convolution (**G-conv**) layer:
+#
+# $$
+# f_+(y) = < \bbox[yellow]{A_{ug} \circ f(x)}, w_0(x)> _x
+# $$
+#
+# ---
+#
+# Looks familiar?
+#
+# $$
+# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \sum_{x \in \text{domain}} f(\Delta + x) w_0(x) _x = <\bbox[yellow]{f(\Delta + x)}, w_0(x)> _x
+# $$
+#
+#
+
+# %% [markdown]
+# ## Data Augmentation - Transitivity
+#
+# **Transitivity**: for any pair of points $x, y$ and any function $f$, we can always find an augmentation that can transform value $f(x)$ to point $y$
+#
+# $$
+# \forall x : f(x) = \Big( A_{ug} \circ f \Big) (x_0)
+# $$
+#
+# ---
+#
+# - Effectively means the augmentation group is the 'carriage' to move reference frame around the observer
+#
+# <img src="assets/fcnd-frame.png">
+#
+# --- 
+#
+# [*] Image courtesy: udacity.com
+#
+
+# %% [markdown]
 # ## Data Augmentation - Equivariance
 #
-# Hypothesis 1 (**equivariance**): Should be applicable to any layer
+# Plain old **Equivariance**: applying an augmentation $A_{ug}$ on the input has the same effect as applying $A_{ug}$ on the output
 #
-# [in the next slide add more visual explain with equivariance example]
+# $$
+# A_{ug} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
+# $$
+#
+# ---
+#
+# - example: SQL prediate pushdown
+# - example: first input & final output of Masked-CNN & Autoencoder (& maybe Style Transfer)
+#
+# <img src="assets/maskedCNN2.png"> | <img src="assets/maskedCNN1.png">
+# --- | ---
+
+# %% [markdown]
+# ## Data Augmentation - Group Equivariance
+#
+# **Group Equivariance**: applying an augmentation $A_{ug}$ on the input has the same effect as applying an augmentation **$U_{ga}$ from the same group** on the output
+#
+# $$
+# U_{ga} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
+# $$
+#
+# ---
+#
+# - Relaxed a bit comparing to Plain old equivariance
+# - Effectively means that the architecture of the first layer can be carried over to the subsequent layers with little changes, applied on high-level features
+#
 
 # %%
 
@@ -124,40 +201,18 @@ drawGraph(g2, layoutG=g)
 plt.show()
 
 # %% [markdown]
-# ## Data Augmentation - Transitivity
+# ## *Data Augmentation $\Longrightarrow$ G-ConvNet - Proof*
 #
-# Hypothesis 1 (equivariance): Should be applicable to any layer
-#
-# $$
-# U_{ga} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
-# $$
-#
-# Hypothesis 2 (**transitivity**): in any signal we can find a reference point $x_0$, such that values of **any other points** can be found on $x_0$ of an augmented signal:
+# - **Transitivity**:
 #
 # $$
 # \forall x : f(x) = \Big( \bar{A}_{ug} \circ f \Big) (x_0)
 # $$
-#    
-# So what does that supposed to mean?
 #
-# -- [insert pictures that demonstrates transitive augmentation]
-#
-# -- prefer a guy driving a car
-#
-
-# %% [markdown]
-# ## Data Augmentation - Combining All Together
-#
-# Hypothesis 1 (equivariance): Should be applicable to any layer
+# - **Group equivariance**
 #
 # $$
 # U_{ga} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
-# $$
-#
-# Hypothesis 2 (transitivity): in any signal we can find a reference point $x_0$, such that values of **any other points** can be found on $x_0$ of an augmented signal:
-#
-# $$
-# \forall x : f(x) = \Big( \bar{A}_{ug} \circ f \Big) (x_0)
 # $$
 #
 # **Combining all together**:
@@ -166,13 +221,11 @@ plt.show()
 # f_+(y) = \Big( \bar{U}_{ga} \circ f_+ \Big)(y_0) = <\bar{A}_{ug} \circ f(x), w(x, y_0)> _x = <\bbox[yellow]{\bar{A}_{ug} \circ f(x)}, w_0(x)> _x
 # $$
 #
-# Looks familiar yet?
+# More rigorous proof available in*
 #
-# $$
-# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \int\limits_{x \in \text{domain}} f(\Delta + x) w_0(x) _x = <\bbox[yellow]{f(\Delta + x)}, w_0(x)> _x
-# $$
+# ---
 #
-#
+# [*] R. Kondor and S. Trivedi, “On the Generalization of Equivariance and Convolution in Neural Networks to the Action of Compact Groups” 2018
 
 
 # %%

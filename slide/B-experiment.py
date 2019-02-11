@@ -183,6 +183,11 @@ def newModel() -> glu.nn.HybridSequential:
     return model
 
 
+# %% [markdown]
+# ## Data Augmentation - Start Learning!
+#
+# Weight map before training
+
 # %%
 
 # Remember all weights start with 0
@@ -250,6 +255,11 @@ def train(
     return model
 
 
+# %% [markdown]
+# ## Data Augmentation - Start Learning!
+#
+# Trained on raw MNIST dataset
+
 # %%
 
 model = train("raw")
@@ -261,6 +271,11 @@ utils.helper.view_classify(auggedUp[0], ps[0])
 
 # %%
 utils.helper.view_classify(auggedUp[88], ps[88])
+
+# %% [markdown]
+# ## Data Augmentation - Start Learning!
+#
+# Weight map trained on raw MNIST dataset
 
 # %%
 
@@ -275,6 +290,11 @@ utils.helper.viewFCWeights(fc1)
 # now let's enable augmentation
 
 augModel = train("aug", aug=augmenter.augFirstTuple)
+
+# %% [markdown]
+# ## Data Augmentation - Start Learning!
+#
+# Weight map trained on raw MNIST dataset
 
 # %%
 

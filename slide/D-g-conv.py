@@ -102,7 +102,7 @@ nodes = [
 ]
 
 for i in range(0, len(nodes) - 1):
-    g.add_edge(nodes[i], nodes[i + 1], text="||")
+    g.add_edge(nodes[i], nodes[i + 1], text="conv")
 
 drawGraph(g)
 

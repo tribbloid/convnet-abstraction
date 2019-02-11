@@ -130,9 +130,12 @@ plt.rcParams['figure.figsize'] = SIZE
 # &\text{(bijectory)} & \widehat{f_+}(n) &= \sum_m \Big< < \bbox[yellow]{A_{ug}(y)} \circ f(x), u_m(x) >_x \Big| u_n(y) \Big>_y \cdot < w_0(x), u_m(x) >_x \\
 # &\text{(linear)} & &= \sum_m < u_n(y), A_{ug}(y)>_y \circ < f(x), u_m(x) >_x \cdot < w_0(x), u_m(x) >_x \\
 # & & &= < \widehat{A_{ug}}(n) \circ \widehat{f}(m), \widehat{w_0}(m) >_m \text{  (looks like convolution theorem still works here)} \\
-# & \text{(ONLY IF $A_{ug}$ is also distance-preserving)} & &= <\widehat{f}(m), \widehat{A_{ug}^{-1}}(n) \circ \widehat{w_0}(i) >_m 
+# & \text{(ONLY IF $A_{ug}$ is also distance-preserving)} & &= <\widehat{f}(m), \widehat{A_{ug}^{-1}}(n) \circ \widehat{w_0}(m) >_m 
 # \end{align}
 #
+# ---
+#
+# [*] More rigorous proof for $SO(3)$ case: T. S. Cohen, M. Geiger, J. Koehler, and M. Welling, “Spherical CNNs,” no. 3, pp. 1–15, 2018.
 
 # %% [markdown]
 # ## Harmonic Net (CVPR 2017*)
@@ -147,9 +150,9 @@ plt.rcParams['figure.figsize'] = SIZE
 # - GFT $\longleftarrow$ FFT (with Gaussian resampling)
 # - number of coefficients $\longleftarrow 2$: $m \in {0, 1}$
 #
-# Orthonormal bases looks like this:
+# Orthonormal bases (without radial):
 #
-# <img src="assets/hnet-bases.png">
+# <img src="assets/hnet-bases.png" width="700px">
 #
 # ---
 #
@@ -164,38 +167,61 @@ plt.rcParams['figure.figsize'] = SIZE
 #
 # ---
 #
+# - $u_m(x) \longleftarrow e^{m x}$ (2D Fourier series, x is a complex number)
+# - GFT $\longleftarrow$ FFT (with Gaussian resampling)
+# - number of coefficients $\longleftarrow 2$: $m \in {0, 1}$
+#
+# Orthonormal bases (with radial):
+#
+# <img src="assets/fourier-full.png">
+#
+# ---
+#
+# [*] Image courtesy: C. E. Coleman-Smith, H. Petersen, and R. L. Wolpert, “Classification of initial state granularity via 2d Fourier Expansion” Apr. 2012.
+
+# %% [markdown]
+# ## Harmonic Net (CVPR 2017*)
+#
+# | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
+# | --- |---|---|---
+# | domain | $R^2$ | $O(2)$ | $O(2) \cong R^2 \times SO(2)$ (translation, arbitrary rotation)
+#
+# ---
+#
 
 # %%
 g = nx.DiGraph(directed=True)
 
-tail = "$f: R^2$"
+tail = "$f: R^2 \longrightarrow R$"
 
 angles = [0, 1]
 
-def repr(v: int) -> str:
-    r = regularize(v)
+def repr(r: int) -> str:
     if r > 0:
-        return f"+{str(r)}^{{\circ}}"
+        return f"{str(r)}"
     else:
-        return f"{str(r)}^{{\circ}}"
+        return f"{str(r)}"
 
 sub = "+"
 subPlus = ""
 
+def getNode(sub, i):
+    return f"$\widehat{{f_{{{sub}}}}} | m={repr(i)}: R^3 \longrightarrow C$"
+
 for i in angles:
-    node = f"$f_{{{sub}}} | {repr(i)}$"
-    g.add_edge(tail, node, text=f"${repr(i)}$")
+    node = getNode(sub, i)
+    g.add_edge(tail, node, text=f"GFT: m=${repr(i)}$")
 
 for epoch in range(1, 3):
     subPlus = f"{sub}+"
     for i in angles:
         for j in angles:
-            prev = f"$f_{{{sub}}} | {repr(i)}$"
-            node = f"$f_{{{subPlus}}} | {repr(j)}$"
-            g.add_edge(prev, node, text=f"${repr(j - i)}$")
+            prev = getNode(sub, i)
+            node = getNode(subPlus, j)
+            g.add_edge(prev, node, text=f"$\widehat{{A_{{ug}}}} | \Delta m={repr(j - i)}$")
     sub = subPlus
 
-drawGraph(g, font='humor sans', label_pos=0.8)
+drawGraph(g, font='humor sans', label_pos=0.7)
 
 plt.show()
 
@@ -231,7 +257,7 @@ plt.show()
 #
 # ---
 #
-# [*] Image courtesy: https://www.halfchrome.com/dji-360-drone/
+# [*] Image courtesy: DJI-X https://www.halfchrome.com/dji-360-drone/
 
 # %% [markdown]
 # ## Spherical CNNs (ICLR 2018* best paper)
@@ -248,7 +274,7 @@ plt.show()
 #
 # ---
 #
-# [*] Image Courtesy: https://www.skydio.com/technology/
+# [*] Image Courtesy: Skydio R1 https://www.skydio.com/technology/
 #
 
 # %% [markdown]
@@ -266,7 +292,7 @@ plt.show()
 #
 # ---
 #
-# [*] Image Courtesy: https://www.skydio.com/technology/
+# [*] Image Courtesy: Skydio R1 https://www.skydio.com/technology/
 #
 #
 
@@ -282,13 +308,116 @@ plt.show()
 # - $u_m(x) \longleftarrow D_m(x)$ (Wigner-D function, $x$ is an Euler-angle tuple or quaternion)
 #     - collapses to spherical harmonics on the first layer
 # - GFT $\longleftarrow$ SO(3) FFT (with Gaussian resampling)
-# - number of coefficients $\longleftarrow 2$: $m \in [0, 4]$ (increasing beyond that contribute little to accuracy)
+# - number of coefficients $\leq 5$: $m \in [0, 4]$ (increasing beyond that contribute little to accuracy)
 #
 # <img src="assets/sh_basis.png"> 
 #
 # ---
 #
 # [*] T. S. Cohen, M. Geiger, J. Koehler, and M. Welling, “Spherical CNNs,” no. 3, pp. 1–15, 2018.
+
+# %% [markdown]
+# ## Spherical CNNs (ICLR 2018* best paper)
+#
+# | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
+# | --- |---|---|---
+# | domain | $S^2$ | $SO(3)$ | $SO(3) \cong SU(2)$ (3d rotation)
+#
+# ---
+
+# %%
+g = nx.DiGraph(directed=True)
+
+tail = "$f: SO(3) \longrightarrow R$"
+
+angles = [0, 1, 2]
+
+def repr(r: int) -> str:
+    if r > 0:
+        return f"{str(r)}"
+    else:
+        return f"{str(r)}"
+
+sub = "+"
+subPlus = ""
+
+def getNode(sub, i):
+    return f"$\widehat{{f_{{{sub}}}}} | m={repr(i)}: R \longrightarrow C$"
+
+for i in angles:
+    node = getNode(sub, i)
+    g.add_edge(tail, node, text=f"GFT: m=${repr(i)}$")
+
+for epoch in range(1, 2):
+    subPlus = f"{sub}+"
+    for i in angles:
+        for j in angles:
+            prev = getNode(sub, i)
+            node = getNode(subPlus, j)
+            g.add_edge(prev, node, text=f"$\Delta m={repr(j - i)}$")
+    sub = subPlus
+
+drawGraph(g, font='humor sans', label_pos=0.7)
+
+plt.show()
+
+# %% [markdown]
+# ## Tensor Field Network (Not Peer Reviewed!)
+#
+# | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
+# | --- |---|---|---
+# | domain | $R^3$ | $O(3)$ | $O(3) \cong R^3 x SO(3)$ (3d translation & rotation)
+#
+# ---
+#
+# - $u_m(x) \longleftarrow D_m(x)$ (Wigner-D function, $x$ is an Euler-angle tuple or quaternion)
+#     - collapses to spherical harmonics on the first layer
+# - GFT $\longleftarrow$ SO(3) FFT (with Gaussian resampling)
+# - number of coefficients $\longleftarrow 2$: $m \in {0, 1}$
+#
+# <img src="assets/sh_basis.png"> 
+#
+#
+#
+
+# %%
+g = nx.DiGraph(directed=True)
+
+tail = "$f: O(3) \longrightarrow R$"
+
+angles = [0, 1]
+
+def repr(r: int) -> str:
+    if r > 0:
+        return f"{str(r)}"
+    else:
+        return f"{str(r)}"
+
+sub = "+"
+subPlus = ""
+
+def getNode(sub, i):
+    return f"$\widehat{{f_{{{sub}}}}} | m={repr(i)}: R^4 \longrightarrow C$"
+
+for i in angles:
+    node = getNode(sub, i)
+    g.add_edge(tail, node, text=f"GFT: m=${repr(i)}$")
+
+for epoch in range(1, 2):
+    subPlus = f"{sub}+"
+    for i in angles:
+        for j in angles:
+            prev = getNode(sub, i)
+            node = getNode(subPlus, j)
+            g.add_edge(prev, node, text=f"C-G: $\Delta m={repr(j - i)}$")
+    sub = subPlus
+
+drawGraph(g, font='humor sans', label_pos=0.7)
+
+plt.show()
+
+# %%
+
 
 # %%
 

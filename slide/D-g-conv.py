@@ -13,12 +13,12 @@
 #     name: python3
 # ---
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 # %load_ext autoreload
 # %autoreload 2
 # %matplotlib inline
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 import os
 import sys
 from typing import Tuple
@@ -32,17 +32,14 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-# print(sys.path)
-
 import networkx as nx
 
-from graphPlot import drawGraph, SIZE
+from graphPlot import drawGraph, setCanvas
 from const import *
 
-plt.rcParams['figure.figsize'] = SIZE
-# print(plt.rcParams['figure.figsize'])
+setCanvas()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## G-ConvNet
 #
 # $$f_+(y) = <A_{ug} \circ f(x), w_0(x)> _x$$
@@ -66,7 +63,7 @@ plt.rcParams['figure.figsize'] = SIZE
 #
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## ConvNet
 #
 # | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
@@ -75,23 +72,16 @@ plt.rcParams['figure.figsize'] = SIZE
 #
 # ---
 #
-# - That's how it happens! ConvNet layers are just augmented FC layers!
 # - First of its kind but not the last
 # - A rare case when high-level feature domain $\{y\} = \{x\}$, in all other cases $\{y\} \supset \{x\}$
 #
 # <img src="assets/alexnet.png">
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## ConvNet
-#
-# | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
-# | ---|---------------|----------------|-------------------------------
-# | domain | $R^2$         | $R^2$          | $R^2$ (translation only)
-#
-# ---
 
-# %%
+# %% {"slideshow": {"slide_type": "-"}}
 g = nx.DiGraph(directed=True)
 
 nodes = [
@@ -108,7 +98,7 @@ drawGraph(g)
 
 plt.show()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Group Equivariant CNNs (ICML 2016*)
 #
 # | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
@@ -125,16 +115,10 @@ plt.show()
 #
 # [*] T. S. Cohen and M. Welling, “Group Equivariant Convolutional Networks,” ICML 2016.
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Group Equivariant CNNs (ICML 2016*)
-#
-# | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...
-# | --- |---|---|---
-# | domain | $R^2$ | $R^2 \times p4$ | $R^2 \times p4$ (translation, rotation $\pm 90^{\circ}$)
-#
-# ---
 
-# %%
+# %% {"slideshow": {"slide_type": "-"}}
 g = nx.DiGraph(directed=True)
 
 tail = "$f: R^2$"
@@ -179,7 +163,7 @@ drawGraph(g, font='humor sans', label_pos=0.8)
 
 plt.show()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Group Equivariant CNNs (ICML 2016*) - Alternatively
 #
 # | - | Input $f(x)$ | High-level $f_+(y)$, $f_{++}(z)$, ... | Augmentation $A_{ug}$, $U_{ga}$, ...

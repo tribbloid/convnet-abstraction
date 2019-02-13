@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from mpl_toolkits.axisartist.axislines import SubplotZero
 
-SIZE = [14, 10]
+
+def setCanvas():
+    plt.rcParams['figure.figsize'] = [14, 9]
+    plt.rcParams['figure.dpi'] = 80
+    plt.rcParams['savefig.dpi'] = 80
 
 
 def drawEdgesAndLabels(
@@ -70,6 +74,8 @@ def drawGraph(g, layoutG=None, **kwargs):
 
     with plt.xkcd():
         fig, ax = plt.subplots(1)
+        fig.patch.set_alpha(0)
+
         ax.axis('off')
 
         ax = SubplotZero(fig, 111)
@@ -85,6 +91,8 @@ def drawGraph(g, layoutG=None, **kwargs):
 
         for s in ['bottom', 'left']:
             ax.axis[s].set_axisline_style("->")
+
+        ax.patch.set_alpha(0)
 
         nx.drawing.draw_networkx_nodes(g, **nodeOpt)
         nx.drawing.draw_networkx_labels(g, **nodeOpt)

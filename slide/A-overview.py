@@ -12,12 +12,13 @@
 #     name: python3
 # ---
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 # %load_ext autoreload
 # %autoreload 2
 # %matplotlib inline
 
-# %%
+
+# %% {"slideshow": {"slide_type": "skip"}}
 import os
 import sys
 from typing import Tuple
@@ -31,15 +32,12 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-# print(sys.path)
-
 import networkx as nx
 
-from graphPlot import drawGraph, SIZE
+from graphPlot import drawGraph, setCanvas
 from const import *
 
-plt.rcParams['figure.figsize'] = SIZE
-# print(plt.rcParams['figure.figsize'])
+setCanvas()
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # # **Tensor Field Network** (and other ConvNet Generalisations)
@@ -60,10 +58,10 @@ plt.rcParams['figure.figsize'] = SIZE
 #
 # - github.com/tribbloid
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## **Overview**
 
-# %%
+# %% {"slideshow": {"slide_type": "-"}}
 
 g = nx.DiGraph(directed=True)
 
@@ -88,23 +86,31 @@ drawGraph(g)
 
 plt.show()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Pre-ConvNet (1960-1987)
 #
 # <img src="assets/winterIsComing.jpg">
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Pre-ConvNet - Linear/Fully Connected/~~Dense/Perceptron~~ Layer
 #
 # In pursuing of unbounded representation/approximation power
 #
+# ---
+#
 # \begin{align}
-# & \text{($w$ are weight of neurons)} & f_+(y) = \Phi \Big( f(x) \Big) &= \phi \Big( \sum_{x \in \text{domain}} f(x) w(x, y) \Big) \\
-# & \text{(pardon the abusing of notation)} & &= \phi \Big( \bbox[yellow]{< f(x), w(x, y) >_x} \Big)
+# & f_+(y) = \Phi \Big( f(x) \Big) &= \phi \Big( \sum_{x \in \text{domain}} f(x) w(x, y) \Big) \\
+# & &= \phi \Big( \bbox[yellow]{< f(x), w(x, y) >_x} \Big)
 # \end{align}
+#
+# ($w$ are weight of neurons)
 
-# %%
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Pre-ConvNet - Linear/Fully Connected Layer
+#
+
+# %% {"slideshow": {"slide_type": "-"}}
 
 
 g = nx.DiGraph(directed=True)
@@ -134,24 +140,28 @@ drawGraph(g2, g, font_family='humor sans')
 
 plt.show()
 
-# %% [markdown]
-# ## Pre-ConvNet - Linear Layer
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Pre-ConvNet - Linear/Fully Connected Layer
 #
-# <img src="assets/kardashian-counterexample.png">
+# <img src="assets/kardashian-counterexample.png" style="height: 400px;">
 #
 # ---
 #  
-# [*] Image courtesey https://www.quora.com/What-is-the-difference-between-equivariance-and-invariance-in-Convolution-neural-networks
+# [*] Image courtesy https://www.quora.com/What-is-the-difference-between-equivariance-and-invariance-in-Convolution-neural-networks
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Invariant Layer / Bag-of-words?
 #
 # - Don't do this
 #
 # <img src="assets/picassoEffect.jpg">
 #
+# ---
+#
+# [*] Image Courtesy: https://www.amazon.ca/Pablo-Art-Masters-Julie-Birmant/dp/1906838941
+#
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Good catch
@@ -159,7 +169,7 @@ plt.show()
 # <img src="assets/data-aug.png">
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Too slow in practice
@@ -168,85 +178,86 @@ plt.show()
 #
 # --- 
 #
-# 2D translation
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
 #
-# <img src="assets/image-pan.gif" width="600px">
+# | <img src="assets/image-pan.gif" style="height: 400px;"> |
+# | :---: |
+# | 2D translation |
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Time & space complexity increase exponentially with the dimensionality of augmentation
 #
-# ---
-#
-# 2D translation x 1D rotation, you'll see this fairly often on some cameras
-#
-# <img src="assets/human-0g.jpg"> | <img src="assets/drone-overhead.png">
-# --- | ---
+# | <img src="assets/human-0g.jpg"> |
+# | :---: |
+# | 2D translation x 1D rotation, no gravity |
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Time & space complexity increase exponentially with the dimensionality of augmentation
 #
-# ---
-#
-# 3D rotation
-#
-# <img src="assets/fisheye-pan.gif">
+# | <img src="assets/drone-overhead.png" style="height: 400px;"> |
+# | :---: |
+# | 2D translation $\times$ 1D rotation, gravity perpendicular to domain |
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Time & space complexity increase exponentially with the dimensionality of augmentation
 #
-# ---
+# | <img src="assets/fisheye-pan.gif" style="height: 400px;"> |
+# | :---: |
+# | 3D rotation
 #
-# 4D affine transformations
+
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Data Augmentation
 #
-# <img src="assets/airr.png">
+# - Time & space complexity increase exponentially with the dimensionality of augmentation
+#
+# | <img src="assets/airr.png" style="height: 400px;"> |
+# | :---: |
+# | 4D affine transformations |
 #
 # ---
 #
 # [*] Image Courtesy: AIRR https://thedroneracingleague.com/airr/
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Time & space complexity increase exponentially with the dimensionality of augmentation
 #
-# ---
-#
-# 3D translation x 3D rotation
-#
-# <img src="assets/point-cloud-6d.gif" width="800px">
+# | <img src="assets/point-cloud-6d.gif" style="height: 400px;"> |
+# | :---: |
+# | 3D translation $\times$ 3D rotation |
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - Time & space complexity increase exponentially with the dimensionality of augmentation
 #
-# ---
-#
-# Air pressure depending on translation
-#
-# <img src="assets/IAS-vs-TAS.jpg">
+# | <img src="assets/IAS-vs-TAS.jpg" style="height: 400px;"> |
+# | :---: |
+# | Air pressure depending on translation |
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # How about a better idea?
 #
 # - Instead of augmenting, we hard-bake such prior knowledge into the network to yield identical result!
 #
-# <img src="assets/aerial-g-conv.jpg" width="500">
+# | <img src="assets/aerial-g-conv.jpg" style="height: 200px;"> |
+# | --- |
 #
-# ---
 #
 # Augmentation types | Answer
 #  --- | --- 

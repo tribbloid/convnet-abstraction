@@ -13,12 +13,12 @@
 #     name: python3
 # ---
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 # %load_ext autoreload
 # %autoreload 2
 # %matplotlib inline
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 import os
 import sys
 from typing import Tuple
@@ -32,28 +32,28 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-# print(sys.path)
-
 import networkx as nx
 
-from graphPlot import drawGraph, SIZE
+from graphPlot import drawGraph, setCanvas
 from const import *
 
-plt.rcParams['figure.figsize'] = SIZE
-# print(plt.rcParams['figure.figsize'])
+setCanvas()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
+#
+# ---
 #
 # - Form a group $\Bigg \{ A_{ug}, U_{ga}, G_{au} ...... \Bigg \}$, sometimes not commutative/Abelian
 #
 # - $\subset \text{unary operator}: Signal \Longrightarrow Signal $ (making it a group action)
 #     
 # - $\subset \text{**higher-order function**}$
-#
-# ---
 
-# %%
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Data Augmentation
+
+# %% {"slideshow": {"slide_type": "-"}}
 
 g = nx.DiGraph(directed=True)
 
@@ -82,7 +82,7 @@ drawGraph(g, font_family='humor sans',  arrow='-|>')
 
 plt.show()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation $\Longrightarrow$ G-ConvNet
 #
 # **Lemma**: If the augmentation group $\{ A_{ug} \}$ satisifes:
@@ -107,12 +107,25 @@ plt.show()
 # Looks familiar?
 #
 # $$
-# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = \sum_{x \in \text{domain}} f(\Delta + x) w_0(x) _x = <\bbox[yellow]{f(\Delta + x)}, w_0(x)> _x
+# conv(f(- \Delta), w_0(\Delta)) = corr(f(\Delta), w_0(\Delta)) = <\bbox[yellow]{f(\Delta + x)}, w_0(x)> _x
 # $$
 #
 #
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Data Augmentation $\Longrightarrow$ G-ConvNet
+#
+# $$
+# f_+(y) = < A_{ug} \circ f(x), w_0(x)> _x
+# $$
+#
+# ---
+#
+# In short:
+#
+# # A ConvNet layer is just an augmented Linear/Fully-Connected layer!
+
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation - Transitivity
 #
 # **Transitivity**: for any pair of points $x, y$ and any function $f$, we can always find an augmentation that can transform value $f(x)$ to point $y$
@@ -120,19 +133,19 @@ plt.show()
 # $$
 # \forall x : f(x) = \Big( A_{ug} \circ f \Big) (x_0)
 # $$
-#
-# ---
+
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Data Augmentation - Transitivity
 #
 # - Effectively means the augmentation group is the 'carriage' to move reference frame around the observer
 #
-# <img src="assets/fcnd-frame.png">
+# <img src="assets/fcnd-frame.png" style="height: 350px;">
 #
 # --- 
 #
 # [*] Image courtesy: udacity.com
-#
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation - Equivariance
 #
 # Plain old **Equivariance**: applying an augmentation $A_{ug}$ on the input has the same effect as applying $A_{ug}$ on the output
@@ -140,16 +153,22 @@ plt.show()
 # $$
 # A_{ug} \circ f_+(y) = <A_{ug} \circ f(x), w(x, y)> _x
 # $$
-#
-# ---
+
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Data Augmentation - Equivariance
 #
 # - example: SQL prediate pushdown
 # - example: first input & final output of Masked-CNN & Autoencoder (& maybe Style Transfer)
 #
-# <img src="assets/maskedCNN2.png"> | <img src="assets/maskedCNN1.png">
-# --- | ---
+# <table>
+# <tr>
+#     <td><img src="assets/maskedCNN2.png" style="height: 300px;">
+#     </td><td><img src="assets/maskedCNN1.png" style="height: 300px;"></td>
+# </tr>
+# </table>
+#
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation - Group Equivariance
 #
 # **Group Equivariance**: applying an augmentation $A_{ug}$ on the input has the same effect as applying an augmentation **$U_{ga}$ from the same group** on the output
@@ -164,7 +183,10 @@ plt.show()
 # - Effectively means that the architecture of the first layer can be carried over to the subsequent layers with little changes, applied on high-level features
 #
 
-# %%
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Data Augmentation - Group Equivariance
+
+# %% {"slideshow": {"slide_type": "-"}}
 
 g = nx.DiGraph(directed=True)
 
@@ -200,7 +222,7 @@ drawGraph(g2, layoutG=g)
 
 plt.show()
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## *Data Augmentation $\Longrightarrow$ G-ConvNet - Proof*
 #
 # - **Transitivity**:
@@ -224,9 +246,4 @@ plt.show()
 # ---
 #
 # [*] More rigorous proof: R. Kondor and S. Trivedi, “On the Generalization of Equivariance and Convolution in Neural Networks to the Action of Compact Groups” 2018
-
-
-# %%
-
-
 

@@ -13,12 +13,12 @@
 #     name: python3
 # ---
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 # %load_ext autoreload
 # %autoreload 2
 # %matplotlib inline
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 import os
 import sys
 from typing import Tuple
@@ -32,72 +32,41 @@ module_path = os.path.abspath(os.path.join('../python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-# print(sys.path)
-
 import networkx as nx
 
-from graphPlot import drawGraph, SIZE
+from graphPlot import drawGraph, setCanvas
 from const import *
 
-plt.rcParams['figure.figsize'] = SIZE
-# print(plt.rcParams['figure.figsize'])
+setCanvas()
 
-# %% [markdown]
-# ## Data Augmentation
-#
-# Let's do a hello-world experiment on MNIST dataset, here is a simple augmentation:
-
-# %%
-
+# %% {"slideshow": {"slide_type": "skip"}}
 import aug2conv
 from mxnet.ndarray import NDArray
 from mxnet.gluon.data import DataLoader
 from mxnet.gluon.nn import Sequential
+import utils.helper
 
 data = aug2conv.getData()
 
 imgs: NDArray
 imgs, ls = next(data.__iter__())
 
-# %%
+# %% {"slideshow": {"slide_type": "slide"}}
+print("Let's do a hello-world experiment on MNIST dataset:")
+
+slice = imgs[0:64]
+utils.helper.viewWeights(slice)
+
+# %% {"slideshow": {"slide_type": "slide"}}
+print("... for which each image can be augmented until all cases are covered")
+
 img1 = imgs[0].squeeze(axis=(0,))
-print(img1.shape)
-plt.imshow(img1.asnumpy())
-
-# %% [markdown]
-# ## Data Augmentation
-#
-# Now I can shift vertically
-
-# %%
-auged = img1.copy()
-auged = aug2conv.shiftY(auged, 6)
-plt.imshow(auged.asnumpy())
-
-# %% [markdown]
-# ## Data Augmentation
-#
-# ... and horizontally
-
-# %%
-auged = img1.copy()
-auged = aug2conv.shiftX(auged, 7)
-plt.imshow(auged.asnumpy())
-
-# %% [markdown]
-# ## Data Augmentation
-#
-# I can do it all day until it covers every possibilities
-
-# %%
-import utils.helper
-
 augmenter = aug2conv.Augmenter(img1)
 auggedUp = augmenter.aug1(img1)
 utils.helper.viewWeights(auggedUp)
 
-# %% [markdown]
-# ## Data Augmentation - Start Learning!
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Start Learning!
 #
 # ### **2 layers only**
 #
@@ -117,8 +86,8 @@ utils.helper.viewWeights(auggedUp)
 #
 # [*] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation” NIPS 2017, pp. 1–11.
 
-# %% [markdown]
-# ## Data Augmentation - Start Learning!
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Start Learning!
 #
 # <img src="assets/skip1Net.png" width="400">
 #
@@ -126,7 +95,7 @@ utils.helper.viewWeights(auggedUp)
 #
 # [*] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation” NIPS 2017, pp. 1–11.
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 
 from mxnet import autograd, initializer
 import mxnet.gluon as glu
@@ -135,7 +104,7 @@ from pathlib import Path
 lossFn = glu.loss.SoftmaxCrossEntropyLoss()
 
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 
 @dataclass
 class HWY(glu.HybridBlock):
@@ -156,7 +125,7 @@ class HWY(glu.HybridBlock):
         return hash(self.delegate)
 
 
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 # Build a feed-forward network
 # this goofy-looking skip architecture is from:
 # [1] Y. Li and Y. Yuan, “Convergence Analysis of Two-layer Neural Networks with ReLU Activation,” no. Nips, pp. 1–11, 2017.
@@ -183,12 +152,8 @@ def newModel() -> glu.nn.HybridSequential:
     return model
 
 
-# %% [markdown]
-# ## Data Augmentation - Start Learning!
-#
-# Weight map before training
-
-# %%
+# %% {"slideshow": {"slide_type": "slide"}}
+print("Weight map before training")
 
 # Remember all weights start with 0
 model = newModel()
@@ -198,10 +163,7 @@ fc1 = model[0].getLayers()[0]
 utils.helper.viewFCWeights(fc1)
 
 
-# %% [markdown]
-# ## Data Augmentation - On Raw Dataset
-
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 def train(
         name: str,
         loader: DataLoader = data,
@@ -255,60 +217,39 @@ def train(
     return model
 
 
-# %% [markdown]
-# ## Data Augmentation - Start Learning!
-#
-# Trained on raw MNIST dataset
-
-# %%
-
+# %% {"slideshow": {"slide_type": "skip"}}
 model = train("raw")
 
 logits = model.forward(auggedUp.as_in_context(CTX))
 ps = mx.ndarray.softmax(logits, axis=1)
 
-utils.helper.view_classify(auggedUp[0], ps[0])
+# %% {"slideshow": {"slide_type": "slide"}}
+print("Trained on raw MNIST dataset")
 
-# %%
+utils.helper.view_classify(auggedUp[0], ps[0])
 utils.helper.view_classify(auggedUp[88], ps[88])
 
-# %% [markdown]
-# ## Data Augmentation - Start Learning!
-#
-# Weight map trained on raw MNIST dataset
-
-# %%
+# %% {"slideshow": {"slide_type": "slide"}}
+print("Weight map after training on raw MNIST dataset")
 
 fc1 = model[0].getLayers()[0]
 utils.helper.viewFCWeights(fc1)
 
-# %% [markdown]
-# ## Data Augmentation - On *Augmented* Dataset
-
-# %%
+# %% {"slideshow": {"slide_type": "skip"}}
 
 # now let's enable augmentation
 
 augModel = train("aug", aug=augmenter.augFirstTuple)
 
-# %% [markdown]
-# ## Data Augmentation - Start Learning!
-#
-# Weight map trained on raw MNIST dataset
-
-# %%
+# %% {"slideshow": {"slide_type": "slide"}}
+print("Weight map after training on AUGMENTED MNIST dataset")
 
 fc1 = augModel[0].getLayers()[0]
 utils.helper.viewFCWeights(fc1)
 
-# %% [markdown]
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## Data Augmentation
 #
 # - How did this happen? (you probably want to try this on neural-ODE)
 #
 # <img src="assets/jon-batiste-reaction.gif">
-
-# %%
-
-
-

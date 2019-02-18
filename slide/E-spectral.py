@@ -82,7 +82,16 @@ setCanvas()
 # \end{bmatrix}
 # $$
 #
-# - ... and **orthonormal**: have unit norms and orthogonal to each other
+
+# %% [markdown] {"slideshow": {"slide_type": "slide"}}
+# ## Going Spectral
+#
+# - function is like infinite-dimension vector
+#
+# - Spectral decomposition for functions is like eigen-decomposition for vectors
+#
+# ---
+# - and **orthonormal**: have unit norms and orthogonal to each other
 #
 # $$
 # <u_m(.), u_n(.)> = I_{mn} \text{  (Kronecker delta)}
@@ -114,6 +123,8 @@ setCanvas()
 # %% [markdown] {"slideshow": {"slide_type": "subslide"}}
 # ## *G-conv Theorem - Proof*
 #
+# ---
+#
 # \begin{align}
 # & & f_+(y) &= <A_{ug} \circ f(x), w_0(x)>_x \\
 # & & &= \sum_m \sum_n \widehat{A_{ug} \circ f}(m) \widehat{w_0}(j) <u_m(.), u_n(.)> \\
@@ -127,6 +138,8 @@ setCanvas()
 
 # %% [markdown] {"slideshow": {"slide_type": "subslide"}}
 # ## *G-conv Theorem - Proof*
+#
+# ---
 #
 # If luckily $A_{ug}$ is linear:
 #

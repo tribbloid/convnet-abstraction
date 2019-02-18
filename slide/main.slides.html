@@ -14338,8 +14338,22 @@ f(.) = \sum_{\forall m} \phi_m u_m(.) = \Big[ \phi_1, \phi_2, ... \Big]
     u_2(.) \\
     ...
 \end{bmatrix}
-$$<ul>
-<li>... and <strong>orthonormal</strong>: have unit norms and orthogonal to each other</li>
+$$
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Going-Spectral">Going Spectral<a class="anchor-link" href="#Going-Spectral">&#182;</a></h2><ul>
+<li><p>function is like infinite-dimension vector</p>
+</li>
+<li><p>Spectral decomposition for functions is like eigen-decomposition for vectors</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>and <strong>orthonormal</strong>: have unit norms and orthogonal to each other</li>
 </ul>
 $$
 &lt;u_m(.), u_n(.)&gt; = I_{mn} \text{  (Kronecker delta)}
@@ -14373,7 +14387,8 @@ $$<p>(This makes dot product and G-conv much faster)</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="G-conv-Theorem---Proof"><em>G-conv Theorem - Proof</em><a class="anchor-link" href="#G-conv-Theorem---Proof">&#182;</a></h2>\begin{align}
+<h2 id="G-conv-Theorem---Proof"><em>G-conv Theorem - Proof</em><a class="anchor-link" href="#G-conv-Theorem---Proof">&#182;</a></h2><hr>
+\begin{align}
 &amp; &amp; f_+(y) &amp;= &lt;A_{ug} \circ f(x), w_0(x)&gt;_x \\
 &amp; &amp; &amp;= \sum_m \sum_n \widehat{A_{ug} \circ f}(m) \widehat{w_0}(j) &lt;u_m(.), u_n(.)&gt; \\
 &amp;\text{(orthonormal)} &amp; &amp;= \sum_m \widehat{A_{ug} \circ f}(m) \widehat{w_0}(m) \\
@@ -14387,7 +14402,8 @@ $$<p>(This makes dot product and G-conv much faster)</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="G-conv-Theorem---Proof"><em>G-conv Theorem - Proof</em><a class="anchor-link" href="#G-conv-Theorem---Proof">&#182;</a></h2><p>If luckily $A_{ug}$ is linear:</p>
+<h2 id="G-conv-Theorem---Proof"><em>G-conv Theorem - Proof</em><a class="anchor-link" href="#G-conv-Theorem---Proof">&#182;</a></h2><hr>
+<p>If luckily $A_{ug}$ is linear:</p>
 \begin{align}
 &amp;\text{(bijectory)} &amp; \widehat{f_+}(n) &amp;= \sum_m \Big&lt; &lt; \bbox[yellow]{A_{ug}(y)} \circ f(x), u_m(x) &gt;_x \Big| u_n(y) \Big&gt;_y \cdot &lt; w_0(x), u_m(x) &gt;_x \\
 &amp;\text{(linear)} &amp; &amp;= \sum_m &lt; u_n(y), A_{ug}(y)&gt;_y \circ &lt; f(x), u_m(x) &gt;_x \cdot &lt; w_0(x), u_m(x) &gt;_x \\

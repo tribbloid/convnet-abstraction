@@ -12,3 +12,5 @@ pygraphviz
 dataclasses
 pytest
 IPython
+nbmerge
+nbformat

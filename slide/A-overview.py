@@ -42,7 +42,7 @@ setCanvas()
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # # **Tensor Field Network** (and other ConvNet Generalisations)
 #
-# ## *TDLS - Feb 11. 2019*
+# *TDLS - Feb 11. 2019*
 #
 # ### **Chris Dryden**
 #
@@ -54,9 +54,11 @@ setCanvas()
 #
 # - pc175@uowmail.edu.au
 #
-# - datapassports.com
-#
 # - github.com/tribbloid
+#
+# ---
+#
+# Notebook & sourcecode: [https://github.com/tribbloid/convnet-abstraction/tree/master/slide]()
 
 # %% [markdown] {"slideshow": {"slide_type": "slide"}}
 # ## **Overview**

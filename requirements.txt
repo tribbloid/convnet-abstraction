@@ -4,49 +4,115 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-atomicwrites==1.2.1       # via pytest
-attrs==18.2.0             # via pytest
-backcall==0.1.0           # via ipython
+atomicwrites==1.2.1
+    # via pytest
+attrs==18.2.0
+    # via pytest
+backcall==0.1.0
+    # via ipython
 brine==1.0.0
-certifi==2018.11.29       # via requests
-chardet==3.0.4            # via requests
-cycler==0.10.0            # via matplotlib
+    # via -r requirements.in
+certifi==2018.11.29
+    # via requests
+chardet==3.0.4
+    # via requests
+cycler==0.10.0
+    # via matplotlib
 dataclasses==0.6
-decorator==4.3.2          # via ipython, networkx, traitlets
+    # via -r requirements.in
+decorator==4.3.2
+    # via
+    #   ipython
+    #   networkx
+    #   traitlets
 future==0.17.1
-graphviz==0.8.4           # via mxnet-cu100
-idna==2.8                 # via requests
-ipython-genutils==0.2.0   # via nbformat, traitlets
+    # via -r requirements.in
+graphviz==0.8.4
+    # via mxnet-cu100
+idna==2.8
+    # via requests
+ipython-genutils==0.2.0
+    # via
+    #   nbformat
+    #   traitlets
 ipython==7.2.0
-jedi==0.13.2              # via ipython
-jsonschema==2.6.0         # via nbformat
-jupyter-core==4.4.0       # via nbformat
-kiwisolver==1.0.1         # via matplotlib
+    # via -r requirements.in
+jedi==0.13.2
+    # via ipython
+jsonschema==2.6.0
+    # via nbformat
+jupyter-core==4.4.0
+    # via nbformat
+kiwisolver==1.0.1
+    # via matplotlib
 matplotlib==3.0.2
-more-itertools==5.0.0     # via pytest
+    # via -r requirements.in
+more-itertools==5.0.0
+    # via pytest
 mxnet-cu100==1.3.1
+    # via -r requirements.in
 mypy-extensions==0.4.1
+    # via
+    #   -r requirements.in
+    #   mypy
 mypy==0.660
+    # via -r requirements.in
 nbformat==4.4.0
+    # via -r requirements.in
 nbmerge==0.0.4
+    # via -r requirements.in
 networkx==2.2
+    # via -r requirements.in
 numpy==1.14.6
-parso==0.3.3              # via jedi
-pexpect==4.6.0            # via ipython
-pickleshare==0.7.5        # via ipython
-pluggy==0.8.1             # via pytest
-prompt-toolkit==2.0.8     # via ipython
-ptyprocess==0.6.0         # via pexpect
-py==1.7.0                 # via pytest
-pygments==2.3.1           # via ipython
+    # via
+    #   -r requirements.in
+    #   matplotlib
+    #   mxnet-cu100
+parso==0.3.3
+    # via jedi
+pexpect==4.6.0
+    # via ipython
+pickleshare==0.7.5
+    # via ipython
+pluggy==0.8.1
+    # via pytest
+prompt-toolkit==2.0.8
+    # via ipython
+ptyprocess==0.6.0
+    # via pexpect
+py==1.7.0
+    # via pytest
+pygments==2.7.4
+    # via ipython
 pygraphviz==1.5
-pyparsing==2.3.1          # via matplotlib
+    # via -r requirements.in
+pyparsing==2.3.1
+    # via matplotlib
 pytest==4.2.0
-python-dateutil==2.7.5    # via matplotlib
-requests==2.21.0          # via mxnet-cu100
+    # via -r requirements.in
+python-dateutil==2.7.5
+    # via matplotlib
+requests==2.21.0
+    # via mxnet-cu100
 six==1.12.0
+    # via
+    #   -r requirements.in
+    #   cycler
+    #   more-itertools
+    #   prompt-toolkit
+    #   pytest
+    #   python-dateutil
+    #   traitlets
 tqdm==4.30.0
-traitlets==4.3.2          # via ipython, jupyter-core, nbformat
-typed-ast==1.2.0          # via mypy
-urllib3==1.24.1           # via requests
-wcwidth==0.1.7            # via prompt-toolkit
+    # via -r requirements.in
+traitlets==4.3.2
+    # via
+    #   ipython
+    #   jupyter-core
+    #   nbformat
+typed-ast==1.2.0
+    # via mypy
+urllib3==1.24.1
+    # via requests
+wcwidth==0.1.7
+    # via prompt-toolkit
